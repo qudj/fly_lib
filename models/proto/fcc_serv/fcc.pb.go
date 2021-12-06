@@ -80,10 +80,9 @@ func (m *BaseRet) GetMsg() string {
 
 // swagger:model
 type FetchProjectsRequest struct {
-	Limit       int64  `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset      int64  `protobuf:"varint,2,opt,name=offset,proto3" json:"offset,omitempty"`
-	ProjectKey  string `protobuf:"bytes,3,opt,name=project_key,json=projectKey,proto3" json:"project_key,omitempty"`
-	ProjectName string `protobuf:"bytes,4,opt,name=project_name,json=projectName,proto3" json:"project_name,omitempty"`
+	Limit  int64             `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"`
+	Offset int64             `protobuf:"varint,2,opt,name=offset,proto3" json:"offset,omitempty"`
+	Filter map[string]string `protobuf:"bytes,3,rep,name=filter,proto3" json:"filter,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 }
 
 func (m *FetchProjectsRequest) Reset()         { *m = FetchProjectsRequest{} }
@@ -133,18 +132,11 @@ func (m *FetchProjectsRequest) GetOffset() int64 {
 	return 0
 }
 
-func (m *FetchProjectsRequest) GetProjectKey() string {
+func (m *FetchProjectsRequest) GetFilter() map[string]string {
 	if m != nil {
-		return m.ProjectKey
+		return m.Filter
 	}
-	return ""
-}
-
-func (m *FetchProjectsRequest) GetProjectName() string {
-	if m != nil {
-		return m.ProjectName
-	}
-	return ""
+	return nil
 }
 
 type FetchProjectsRet struct {
@@ -322,11 +314,10 @@ func (m *FetchProjectsResponse) GetData() *FetchProjectsRet {
 
 // swagger:model
 type FetchGroupsRequest struct {
-	Limit      int64  `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset     int64  `protobuf:"varint,2,opt,name=offset,proto3" json:"offset,omitempty"`
-	ProjectKey string `protobuf:"bytes,3,opt,name=project_key,json=projectKey,proto3" json:"project_key,omitempty"`
-	GroupKey   string `protobuf:"bytes,4,opt,name=group_key,json=groupKey,proto3" json:"group_key,omitempty"`
-	GroupName  string `protobuf:"bytes,5,opt,name=group_name,json=groupName,proto3" json:"group_name,omitempty"`
+	Limit      int64             `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"`
+	Offset     int64             `protobuf:"varint,2,opt,name=offset,proto3" json:"offset,omitempty"`
+	ProjectKey string            `protobuf:"bytes,3,opt,name=project_key,json=projectKey,proto3" json:"project_key,omitempty"`
+	Filter     map[string]string `protobuf:"bytes,4,rep,name=filter,proto3" json:"filter,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 }
 
 func (m *FetchGroupsRequest) Reset()         { *m = FetchGroupsRequest{} }
@@ -383,18 +374,11 @@ func (m *FetchGroupsRequest) GetProjectKey() string {
 	return ""
 }
 
-func (m *FetchGroupsRequest) GetGroupKey() string {
+func (m *FetchGroupsRequest) GetFilter() map[string]string {
 	if m != nil {
-		return m.GroupKey
+		return m.Filter
 	}
-	return ""
-}
-
-func (m *FetchGroupsRequest) GetGroupName() string {
-	if m != nil {
-		return m.GroupName
-	}
-	return ""
+	return nil
 }
 
 type FetchGroupsRet struct {
@@ -580,11 +564,11 @@ func (m *FetchGroupsResponse) GetData() *FetchGroupsRet {
 
 // swagger:model
 type FetchConfigsRequest struct {
-	Limit      int64  `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset     int64  `protobuf:"varint,2,opt,name=offset,proto3" json:"offset,omitempty"`
-	ProjectKey string `protobuf:"bytes,3,opt,name=project_key,json=projectKey,proto3" json:"project_key,omitempty"`
-	GroupKey   string `protobuf:"bytes,4,opt,name=group_key,json=groupKey,proto3" json:"group_key,omitempty"`
-	ConfKey    string `protobuf:"bytes,5,opt,name=conf_key,json=confKey,proto3" json:"conf_key,omitempty"`
+	Limit      int64             `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"`
+	Offset     int64             `protobuf:"varint,2,opt,name=offset,proto3" json:"offset,omitempty"`
+	ProjectKey string            `protobuf:"bytes,3,opt,name=project_key,json=projectKey,proto3" json:"project_key,omitempty"`
+	GroupKey   string            `protobuf:"bytes,4,opt,name=group_key,json=groupKey,proto3" json:"group_key,omitempty"`
+	Filter     map[string]string `protobuf:"bytes,5,rep,name=filter,proto3" json:"filter,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 }
 
 func (m *FetchConfigsRequest) Reset()         { *m = FetchConfigsRequest{} }
@@ -648,11 +632,11 @@ func (m *FetchConfigsRequest) GetGroupKey() string {
 	return ""
 }
 
-func (m *FetchConfigsRequest) GetConfKey() string {
+func (m *FetchConfigsRequest) GetFilter() map[string]string {
 	if m != nil {
-		return m.ConfKey
+		return m.Filter
 	}
-	return ""
+	return nil
 }
 
 type FetchConfigsRet struct {
@@ -1383,24 +1367,24 @@ func (m *PublishResponse) GetBaseRet() *BaseRet {
 }
 
 // swagger:model
-type FetchMiniConfigRequest struct {
+type FetchConfigRequest struct {
 	ProjectKey string `protobuf:"bytes,1,opt,name=project_key,json=projectKey,proto3" json:"project_key,omitempty"`
 	GroupKey   string `protobuf:"bytes,2,opt,name=group_key,json=groupKey,proto3" json:"group_key,omitempty"`
 	ConfKey    string `protobuf:"bytes,3,opt,name=conf_key,json=confKey,proto3" json:"conf_key,omitempty"`
 }
 
-func (m *FetchMiniConfigRequest) Reset()         { *m = FetchMiniConfigRequest{} }
-func (m *FetchMiniConfigRequest) String() string { return proto.CompactTextString(m) }
-func (*FetchMiniConfigRequest) ProtoMessage()    {}
-func (*FetchMiniConfigRequest) Descriptor() ([]byte, []int) {
+func (m *FetchConfigRequest) Reset()         { *m = FetchConfigRequest{} }
+func (m *FetchConfigRequest) String() string { return proto.CompactTextString(m) }
+func (*FetchConfigRequest) ProtoMessage()    {}
+func (*FetchConfigRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_690ecd8b3e17edf8, []int{23}
 }
-func (m *FetchMiniConfigRequest) XXX_Unmarshal(b []byte) error {
+func (m *FetchConfigRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *FetchMiniConfigRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *FetchConfigRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_FetchMiniConfigRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_FetchConfigRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1410,55 +1394,57 @@ func (m *FetchMiniConfigRequest) XXX_Marshal(b []byte, deterministic bool) ([]by
 		return b[:n], nil
 	}
 }
-func (m *FetchMiniConfigRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_FetchMiniConfigRequest.Merge(m, src)
+func (m *FetchConfigRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_FetchConfigRequest.Merge(m, src)
 }
-func (m *FetchMiniConfigRequest) XXX_Size() int {
+func (m *FetchConfigRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *FetchMiniConfigRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_FetchMiniConfigRequest.DiscardUnknown(m)
+func (m *FetchConfigRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_FetchConfigRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_FetchMiniConfigRequest proto.InternalMessageInfo
+var xxx_messageInfo_FetchConfigRequest proto.InternalMessageInfo
 
-func (m *FetchMiniConfigRequest) GetProjectKey() string {
+func (m *FetchConfigRequest) GetProjectKey() string {
 	if m != nil {
 		return m.ProjectKey
 	}
 	return ""
 }
 
-func (m *FetchMiniConfigRequest) GetGroupKey() string {
+func (m *FetchConfigRequest) GetGroupKey() string {
 	if m != nil {
 		return m.GroupKey
 	}
 	return ""
 }
 
-func (m *FetchMiniConfigRequest) GetConfKey() string {
+func (m *FetchConfigRequest) GetConfKey() string {
 	if m != nil {
 		return m.ConfKey
 	}
 	return ""
 }
 
-type MiniConfig struct {
-	Value string `protobuf:"bytes,1,opt,name=value,proto3" json:"value,omitempty"`
+// swagger:model
+type FetchConfigResponse struct {
+	BaseRet *BaseRet `protobuf:"bytes,1,opt,name=base_ret,json=baseRet,proto3" json:"base_ret,omitempty"`
+	Data    *Config  `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
 }
 
-func (m *MiniConfig) Reset()         { *m = MiniConfig{} }
-func (m *MiniConfig) String() string { return proto.CompactTextString(m) }
-func (*MiniConfig) ProtoMessage()    {}
-func (*MiniConfig) Descriptor() ([]byte, []int) {
+func (m *FetchConfigResponse) Reset()         { *m = FetchConfigResponse{} }
+func (m *FetchConfigResponse) String() string { return proto.CompactTextString(m) }
+func (*FetchConfigResponse) ProtoMessage()    {}
+func (*FetchConfigResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_690ecd8b3e17edf8, []int{24}
 }
-func (m *MiniConfig) XXX_Unmarshal(b []byte) error {
+func (m *FetchConfigResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MiniConfig) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *FetchConfigResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MiniConfig.Marshal(b, m, deterministic)
+		return xxx_messageInfo_FetchConfigResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1468,72 +1454,26 @@ func (m *MiniConfig) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *MiniConfig) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MiniConfig.Merge(m, src)
+func (m *FetchConfigResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_FetchConfigResponse.Merge(m, src)
 }
-func (m *MiniConfig) XXX_Size() int {
+func (m *FetchConfigResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MiniConfig) XXX_DiscardUnknown() {
-	xxx_messageInfo_MiniConfig.DiscardUnknown(m)
+func (m *FetchConfigResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_FetchConfigResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MiniConfig proto.InternalMessageInfo
+var xxx_messageInfo_FetchConfigResponse proto.InternalMessageInfo
 
-func (m *MiniConfig) GetValue() string {
-	if m != nil {
-		return m.Value
-	}
-	return ""
-}
-
-// swagger:model
-type FetchMiniConfigResponse struct {
-	BaseRet *BaseRet    `protobuf:"bytes,1,opt,name=base_ret,json=baseRet,proto3" json:"base_ret,omitempty"`
-	Data    *MiniConfig `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
-}
-
-func (m *FetchMiniConfigResponse) Reset()         { *m = FetchMiniConfigResponse{} }
-func (m *FetchMiniConfigResponse) String() string { return proto.CompactTextString(m) }
-func (*FetchMiniConfigResponse) ProtoMessage()    {}
-func (*FetchMiniConfigResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_690ecd8b3e17edf8, []int{25}
-}
-func (m *FetchMiniConfigResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *FetchMiniConfigResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_FetchMiniConfigResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *FetchMiniConfigResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_FetchMiniConfigResponse.Merge(m, src)
-}
-func (m *FetchMiniConfigResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *FetchMiniConfigResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_FetchMiniConfigResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_FetchMiniConfigResponse proto.InternalMessageInfo
-
-func (m *FetchMiniConfigResponse) GetBaseRet() *BaseRet {
+func (m *FetchConfigResponse) GetBaseRet() *BaseRet {
 	if m != nil {
 		return m.BaseRet
 	}
 	return nil
 }
 
-func (m *FetchMiniConfigResponse) GetData() *MiniConfig {
+func (m *FetchConfigResponse) GetData() *Config {
 	if m != nil {
 		return m.Data
 	}
@@ -1543,14 +1483,17 @@ func (m *FetchMiniConfigResponse) GetData() *MiniConfig {
 func init() {
 	proto.RegisterType((*BaseRet)(nil), "fcc.serv.BaseRet")
 	proto.RegisterType((*FetchProjectsRequest)(nil), "fcc.serv.FetchProjectsRequest")
+	proto.RegisterMapType((map[string]string)(nil), "fcc.serv.FetchProjectsRequest.FilterEntry")
 	proto.RegisterType((*FetchProjectsRet)(nil), "fcc.serv.FetchProjectsRet")
 	proto.RegisterType((*Project)(nil), "fcc.serv.Project")
 	proto.RegisterType((*FetchProjectsResponse)(nil), "fcc.serv.FetchProjectsResponse")
 	proto.RegisterType((*FetchGroupsRequest)(nil), "fcc.serv.FetchGroupsRequest")
+	proto.RegisterMapType((map[string]string)(nil), "fcc.serv.FetchGroupsRequest.FilterEntry")
 	proto.RegisterType((*FetchGroupsRet)(nil), "fcc.serv.FetchGroupsRet")
 	proto.RegisterType((*Group)(nil), "fcc.serv.Group")
 	proto.RegisterType((*FetchGroupsResponse)(nil), "fcc.serv.FetchGroupsResponse")
 	proto.RegisterType((*FetchConfigsRequest)(nil), "fcc.serv.FetchConfigsRequest")
+	proto.RegisterMapType((map[string]string)(nil), "fcc.serv.FetchConfigsRequest.FilterEntry")
 	proto.RegisterType((*FetchConfigsRet)(nil), "fcc.serv.FetchConfigsRet")
 	proto.RegisterType((*Config)(nil), "fcc.serv.Config")
 	proto.RegisterType((*FetchConfigsResponse)(nil), "fcc.serv.FetchConfigsResponse")
@@ -1564,72 +1507,73 @@ func init() {
 	proto.RegisterType((*PrePublishResponse)(nil), "fcc.serv.PrePublishResponse")
 	proto.RegisterType((*PublishRequest)(nil), "fcc.serv.PublishRequest")
 	proto.RegisterType((*PublishResponse)(nil), "fcc.serv.PublishResponse")
-	proto.RegisterType((*FetchMiniConfigRequest)(nil), "fcc.serv.FetchMiniConfigRequest")
-	proto.RegisterType((*MiniConfig)(nil), "fcc.serv.MiniConfig")
-	proto.RegisterType((*FetchMiniConfigResponse)(nil), "fcc.serv.FetchMiniConfigResponse")
+	proto.RegisterType((*FetchConfigRequest)(nil), "fcc.serv.FetchConfigRequest")
+	proto.RegisterType((*FetchConfigResponse)(nil), "fcc.serv.FetchConfigResponse")
 }
 
 func init() { proto.RegisterFile("fcc.proto", fileDescriptor_690ecd8b3e17edf8) }
 
 var fileDescriptor_690ecd8b3e17edf8 = []byte{
-	// 912 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x57, 0xcd, 0x4e, 0xc3, 0x46,
-	0x10, 0x8e, 0xb1, 0x9d, 0x9f, 0x09, 0x85, 0xb0, 0xa4, 0x34, 0x04, 0x30, 0xc1, 0x2d, 0x52, 0xa4,
-	0xd2, 0x54, 0xa2, 0x0f, 0xd0, 0x16, 0x24, 0x2a, 0x44, 0xf9, 0x91, 0x91, 0x50, 0x6f, 0x91, 0xe3,
-	0x6c, 0xc0, 0x6d, 0x12, 0x3b, 0xb6, 0x13, 0x89, 0x4b, 0xaf, 0xed, 0xb1, 0x0f, 0x50, 0xd1, 0xc7,
-	0x69, 0x4f, 0x15, 0xc7, 0x1e, 0x2b, 0x78, 0x91, 0xca, 0xbb, 0x6b, 0x7b, 0xd7, 0x8e, 0xa1, 0x0a,
-	0xa2, 0xbd, 0x65, 0x77, 0x66, 0xbf, 0xfd, 0x66, 0xe6, 0xdb, 0x0f, 0x03, 0x95, 0x81, 0x65, 0x75,
-	0x5c, 0xcf, 0x09, 0x1c, 0x54, 0x0e, 0x7f, 0xfa, 0xd8, 0x9b, 0xe9, 0x9f, 0x43, 0xe9, 0xc8, 0xf4,
-	0xb1, 0x81, 0x03, 0x84, 0x40, 0xb1, 0x9c, 0x3e, 0x6e, 0x48, 0x2d, 0xa9, 0x2d, 0x1b, 0xe4, 0x37,
-	0xaa, 0x81, 0x3c, 0xf2, 0x6f, 0x1b, 0x4b, 0x2d, 0xa9, 0x5d, 0x31, 0xc2, 0x9f, 0xfa, 0xcf, 0x12,
-	0xd4, 0x4f, 0x70, 0x60, 0xdd, 0x5d, 0x79, 0xce, 0xf7, 0xd8, 0x0a, 0x7c, 0x03, 0x4f, 0xa6, 0xd8,
-	0x0f, 0x50, 0x1d, 0xd4, 0xa1, 0x3d, 0xb2, 0x03, 0x76, 0x9e, 0x2e, 0xd0, 0x06, 0x14, 0x9d, 0xc1,
-	0xc0, 0xc7, 0x01, 0xc1, 0x90, 0x0d, 0xb6, 0x42, 0xbb, 0x50, 0x75, 0x29, 0x40, 0xf7, 0x07, 0x7c,
-	0xdf, 0x90, 0xc9, 0x05, 0xc0, 0xb6, 0xce, 0xf0, 0x3d, 0xda, 0x83, 0xe5, 0x28, 0x61, 0x6c, 0x8e,
-	0x70, 0x43, 0x21, 0x19, 0xd1, 0xa1, 0x0b, 0x73, 0x84, 0xf5, 0x4b, 0xa8, 0xa5, 0x98, 0x10, 0x16,
-	0x81, 0x13, 0x98, 0xc3, 0x88, 0x05, 0x59, 0xa0, 0x7d, 0x50, 0x86, 0xb6, 0x1f, 0x72, 0x90, 0xdb,
-	0xd5, 0xc3, 0xb5, 0x4e, 0x54, 0x7e, 0x87, 0x1d, 0x35, 0x48, 0x58, 0xff, 0x49, 0x82, 0x12, 0xdb,
-	0x49, 0x13, 0x94, 0x5e, 0x25, 0xb8, 0x94, 0x21, 0x88, 0x5a, 0x50, 0xed, 0x63, 0xdf, 0xf2, 0x6c,
-	0x37, 0xb0, 0x9d, 0x31, 0x2b, 0x92, 0xdf, 0x0a, 0xdb, 0xe3, 0x07, 0x66, 0x30, 0xf5, 0x49, 0x7d,
-	0xb2, 0xc1, 0x56, 0xfa, 0x14, 0x3e, 0x4c, 0x95, 0xe6, 0xbb, 0xce, 0xd8, 0xc7, 0xe8, 0x00, 0xca,
-	0x3d, 0xd3, 0xc7, 0x5d, 0x0f, 0xd3, 0x46, 0x0b, 0xd5, 0xb0, 0x49, 0x1a, 0xa5, 0x1e, 0x1b, 0x69,
-	0x07, 0x94, 0xbe, 0x19, 0x98, 0x84, 0x5b, 0xf5, 0xb0, 0x99, 0x64, 0xa6, 0xfb, 0x66, 0x90, 0x3c,
-	0xfd, 0x37, 0x09, 0x10, 0x09, 0x7d, 0xe3, 0x39, 0x53, 0xf7, 0xbd, 0x46, 0xbb, 0x05, 0x95, 0xdb,
-	0x10, 0x9f, 0x84, 0xe9, 0x5c, 0xcb, 0x64, 0x23, 0x0c, 0xee, 0x00, 0xd0, 0x20, 0x69, 0xaa, 0x4a,
-	0xa2, 0x34, 0x9d, 0xcc, 0xfc, 0x0c, 0x56, 0x04, 0x82, 0x79, 0x13, 0xff, 0x58, 0x98, 0xf8, 0x6a,
-	0x52, 0x39, 0x39, 0xc8, 0xe6, 0xfd, 0x20, 0x81, 0x4a, 0xd6, 0xaf, 0x4f, 0x5b, 0xe0, 0xbc, 0xf4,
-	0x22, 0x67, 0x39, 0xc5, 0x39, 0x2d, 0x03, 0xe5, 0x25, 0x19, 0xa8, 0x82, 0x0c, 0x26, 0xb0, 0x2e,
-	0x54, 0xbb, 0x90, 0x08, 0x0e, 0x04, 0x11, 0x34, 0x52, 0x22, 0x88, 0x1b, 0xc9, 0x24, 0xf0, 0xab,
-	0xc4, 0xee, 0x3c, 0x76, 0xc6, 0x03, 0xfb, 0xf6, 0x7f, 0xd1, 0xc0, 0x26, 0x94, 0x2d, 0x67, 0x3c,
-	0x20, 0x31, 0xaa, 0x80, 0x52, 0xb8, 0x3e, 0xc3, 0xf7, 0xfa, 0x39, 0xac, 0x8a, 0xec, 0xf2, 0x04,
-	0xf0, 0x89, 0x20, 0x80, 0x5a, 0x52, 0x35, 0x3d, 0xc9, 0x14, 0xf0, 0xa7, 0x04, 0x45, 0xba, 0xf1,
-	0x46, 0x09, 0xf0, 0x94, 0x65, 0x81, 0xf2, 0xbf, 0x18, 0x7f, 0x1d, 0xd4, 0x99, 0x39, 0x9c, 0x46,
-	0x72, 0xa7, 0x8b, 0xf0, 0x3e, 0xd7, 0xc3, 0x5d, 0x1a, 0x29, 0xd2, 0xfb, 0x5c, 0x0f, 0xdf, 0x90,
-	0x60, 0xa2, 0x98, 0x92, 0xa0, 0x18, 0x9f, 0xb9, 0x73, 0xdc, 0x9f, 0x85, 0x24, 0xf3, 0x99, 0x20,
-	0x99, 0xcd, 0x94, 0x64, 0x92, 0xde, 0x33, 0xcd, 0xdc, 0x00, 0xba, 0x36, 0x67, 0x38, 0x32, 0x53,
-	0xa6, 0x98, 0x4f, 0xa1, 0xc4, 0xba, 0x97, 0xbd, 0x31, 0x4a, 0x8d, 0x32, 0xd0, 0x3a, 0xa8, 0x8e,
-	0xdb, 0xb5, 0xfb, 0xac, 0xb1, 0x8a, 0xe3, 0x9e, 0xf6, 0xf5, 0x63, 0x58, 0x17, 0x70, 0x17, 0xa9,
-	0x45, 0xbf, 0x80, 0x5a, 0x08, 0x42, 0xdf, 0x3d, 0xa3, 0xb6, 0x0f, 0x2a, 0x99, 0x1c, 0x3b, 0x9e,
-	0xb1, 0x07, 0x1a, 0x9d, 0x4f, 0xea, 0x6b, 0x58, 0xe3, 0xf0, 0x16, 0xa2, 0x64, 0x50, 0x08, 0xa6,
-	0x44, 0xc6, 0xa9, 0x0d, 0x45, 0x8b, 0x6c, 0x30, 0x80, 0xac, 0x64, 0x59, 0x7c, 0x3e, 0xad, 0x23,
-	0x3a, 0x83, 0x08, 0x73, 0x21, 0x5e, 0x0f, 0x12, 0xac, 0x5d, 0x79, 0xf8, 0x6a, 0xda, 0x1b, 0xda,
-	0xfe, 0x5d, 0x44, 0xec, 0xdd, 0x1e, 0x86, 0x20, 0x70, 0x25, 0x25, 0xf0, 0xb8, 0x48, 0x55, 0x2c,
-	0x92, 0xe7, 0xb7, 0x50, 0x91, 0x3f, 0xc2, 0xca, 0x7f, 0x55, 0x60, 0x5c, 0x83, 0xc2, 0xd5, 0xf0,
-	0x25, 0xac, 0xbe, 0xad, 0x80, 0x09, 0x6c, 0x90, 0x67, 0x78, 0x6e, 0x8f, 0x6d, 0x51, 0x42, 0xef,
-	0x55, 0x88, 0xae, 0x03, 0x24, 0xb7, 0x25, 0x76, 0x25, 0x71, 0x76, 0xa5, 0x4f, 0xe0, 0xa3, 0x0c,
-	0xad, 0x85, 0xcc, 0xa7, 0x2d, 0x98, 0x4f, 0x3d, 0xc9, 0xe4, 0x90, 0x49, 0xc6, 0xe1, 0xef, 0x2a,
-	0xc0, 0x89, 0x65, 0x5d, 0x63, 0x6f, 0x66, 0x5b, 0x18, 0x19, 0xf0, 0x81, 0xf0, 0x5d, 0x83, 0xb4,
-	0xdc, 0x0f, 0x1e, 0xd2, 0xaf, 0xe6, 0x6e, 0x6e, 0x9c, 0x12, 0xd7, 0x0b, 0xe8, 0x5b, 0xa8, 0x72,
-	0x7f, 0x26, 0xd1, 0x76, 0xce, 0x5f, 0x4f, 0x8a, 0xb7, 0x93, 0x13, 0x8d, 0xd1, 0x2e, 0x61, 0x99,
-	0x77, 0x50, 0xb4, 0x93, 0xe7, 0xac, 0x14, 0x4f, 0xcb, 0x0b, 0xf3, 0xf4, 0x38, 0x87, 0xe4, 0xe9,
-	0x65, 0x0d, 0x99, 0xa7, 0x37, 0xc7, 0x56, 0xf5, 0x02, 0x3a, 0x81, 0x4a, 0x6c, 0x6d, 0xa8, 0x29,
-	0x66, 0xf3, 0xfe, 0xd9, 0xdc, 0x9a, 0x1b, 0x8b, 0x71, 0x4e, 0x01, 0x12, 0x2f, 0x42, 0xa9, 0x64,
-	0x41, 0xb2, 0xcd, 0xed, 0xf9, 0x41, 0x1e, 0x2a, 0x79, 0xf1, 0x3c, 0x54, 0xc6, 0xa7, 0x78, 0xa8,
-	0xac, 0x49, 0xe8, 0x05, 0xf4, 0x15, 0x94, 0x22, 0x1c, 0xee, 0x23, 0x28, 0x05, 0xb2, 0x39, 0x27,
-	0x12, 0x23, 0x7c, 0xc7, 0x3e, 0x3e, 0xb8, 0xb7, 0xd0, 0x4a, 0x8d, 0x28, 0xf3, 0x28, 0x9b, 0x7b,
-	0x2f, 0x64, 0x44, 0xc8, 0x47, 0x8d, 0x3f, 0x9e, 0x34, 0xe9, 0xf1, 0x49, 0x93, 0xfe, 0x7e, 0xd2,
-	0xa4, 0x5f, 0x9e, 0xb5, 0xc2, 0xe3, 0xb3, 0x56, 0xf8, 0xeb, 0x59, 0x2b, 0xf4, 0x8a, 0xe4, 0x3f,
-	0xb6, 0x2f, 0xfe, 0x09, 0x00, 0x00, 0xff, 0xff, 0x58, 0xcf, 0x62, 0x6d, 0xbe, 0x0d, 0x00, 0x00,
+	// 944 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x97, 0xcf, 0x6f, 0xdb, 0x36,
+	0x14, 0xc7, 0xad, 0x5a, 0xf2, 0x8f, 0xe7, 0xae, 0x71, 0x98, 0x6e, 0x70, 0xd4, 0x44, 0xf5, 0xb4,
+	0x16, 0xf0, 0xb6, 0xce, 0x03, 0xb2, 0xcb, 0xb6, 0xcb, 0x5a, 0x17, 0xf3, 0x50, 0x74, 0x6b, 0x03,
+	0x15, 0xe8, 0xd5, 0x90, 0x65, 0x3a, 0xd1, 0x66, 0x5b, 0x8a, 0x44, 0x1b, 0xc8, 0x65, 0xd7, 0x5d,
+	0xf7, 0x17, 0xe4, 0x1f, 0xd9, 0x71, 0x97, 0x9d, 0x86, 0x1c, 0x77, 0x0c, 0x92, 0x3f, 0x64, 0x83,
+	0x48, 0x4a, 0x26, 0xf5, 0xc3, 0x01, 0x94, 0x64, 0x37, 0x92, 0xef, 0xf1, 0xf1, 0xfb, 0x1e, 0x3f,
+	0x7e, 0xa2, 0xa1, 0x39, 0x75, 0x9c, 0xbe, 0x1f, 0x78, 0xc4, 0x43, 0x8d, 0x68, 0x18, 0xe2, 0x60,
+	0x65, 0x7e, 0x09, 0xf5, 0x81, 0x1d, 0x62, 0x0b, 0x13, 0x84, 0x40, 0x75, 0xbc, 0x09, 0xee, 0x28,
+	0x5d, 0xa5, 0x57, 0xb5, 0xe8, 0x18, 0xb5, 0xa1, 0x3a, 0x0f, 0x8f, 0x3a, 0xf7, 0xba, 0x4a, 0xaf,
+	0x69, 0x45, 0x43, 0xf3, 0x4f, 0x05, 0x1e, 0x0e, 0x31, 0x71, 0x8e, 0x0f, 0x03, 0xef, 0x67, 0xec,
+	0x90, 0xd0, 0xc2, 0x27, 0x4b, 0x1c, 0x12, 0xf4, 0x10, 0xb4, 0x99, 0x3b, 0x77, 0x09, 0xdf, 0xcf,
+	0x26, 0xe8, 0x23, 0xa8, 0x79, 0xd3, 0x69, 0x88, 0x09, 0x8d, 0x51, 0xb5, 0xf8, 0x0c, 0x0d, 0xa0,
+	0x36, 0x75, 0x67, 0x04, 0x07, 0x9d, 0x6a, 0xb7, 0xda, 0x6b, 0x1d, 0x7c, 0xd6, 0x8f, 0x25, 0xf5,
+	0xf3, 0xa2, 0xf7, 0x87, 0xd4, 0xf9, 0xfb, 0x05, 0x09, 0x4e, 0x2d, 0xbe, 0x53, 0xff, 0x06, 0x5a,
+	0xc2, 0x72, 0xa4, 0xf5, 0x17, 0x7c, 0x4a, 0x8f, 0x6f, 0x5a, 0xd1, 0x30, 0x92, 0xb4, 0xb2, 0x67,
+	0x4b, 0xcc, 0xf5, 0xb3, 0xc9, 0xb7, 0xf7, 0xbe, 0x56, 0xcc, 0xb7, 0xd0, 0x4e, 0x1d, 0x43, 0x13,
+	0x20, 0x1e, 0xb1, 0x67, 0x71, 0x02, 0x74, 0x82, 0x9e, 0x82, 0x3a, 0x73, 0xc3, 0x48, 0x7e, 0x24,
+	0x73, 0x7b, 0x2d, 0x93, 0x6f, 0xb5, 0xa8, 0xd9, 0xfc, 0x4d, 0x81, 0x3a, 0x5f, 0x41, 0x8f, 0xa1,
+	0xe5, 0xb3, 0xe1, 0x68, 0x2d, 0x08, 0xf8, 0xd2, 0x6b, 0x7c, 0x8a, 0x3e, 0x86, 0xfb, 0xb1, 0xc3,
+	0xc2, 0x9e, 0xc7, 0xf2, 0xe2, 0x4d, 0x6f, 0xec, 0x39, 0x46, 0x5d, 0x68, 0x4d, 0x70, 0xe8, 0x04,
+	0xae, 0x4f, 0x5c, 0x6f, 0xd1, 0xa9, 0x32, 0x0f, 0x61, 0x29, 0xaa, 0x6c, 0x48, 0x6c, 0xb2, 0x0c,
+	0x3b, 0x2a, 0xab, 0x2c, 0x9b, 0x99, 0x4b, 0xf8, 0x30, 0x95, 0x5a, 0xe8, 0x7b, 0x8b, 0x10, 0xa3,
+	0x67, 0xd0, 0x18, 0xdb, 0x21, 0x1e, 0x05, 0x98, 0xdd, 0x91, 0x94, 0x0d, 0x87, 0xc0, 0xaa, 0x8f,
+	0x39, 0x0d, 0x7d, 0x50, 0x27, 0x36, 0xb1, 0xa9, 0xb6, 0xd6, 0x81, 0x5e, 0x78, 0x3d, 0xc4, 0xa2,
+	0x7e, 0xe6, 0x85, 0x02, 0x88, 0x9a, 0x7e, 0x08, 0xbc, 0xa5, 0x5f, 0x92, 0x8a, 0x54, 0xe5, 0xaa,
+	0x99, 0xca, 0x3d, 0x4f, 0xb0, 0x51, 0xe9, 0x7d, 0xf4, 0x52, 0xba, 0xa4, 0xc3, 0x6f, 0x1b, 0x9a,
+	0xd7, 0xf0, 0x40, 0x3a, 0xa4, 0x08, 0x99, 0x4f, 0x24, 0x64, 0xb6, 0xd6, 0x12, 0xe9, 0x46, 0x0e,
+	0xcc, 0x99, 0x02, 0x1a, 0x9d, 0x5f, 0x8f, 0xcb, 0x23, 0x68, 0x1e, 0x45, 0x9e, 0xd4, 0xcc, 0x54,
+	0x35, 0xe8, 0x42, 0x64, 0xdc, 0x07, 0x60, 0x46, 0x4a, 0x12, 0xab, 0x18, 0x73, 0xcf, 0xe3, 0x48,
+	0xdd, 0xc4, 0x91, 0x26, 0x71, 0x74, 0x02, 0x3b, 0x52, 0xb6, 0xa5, 0x28, 0x7a, 0x26, 0x51, 0xd4,
+	0x29, 0xb8, 0xad, 0x98, 0xa1, 0x7f, 0x15, 0x7e, 0xe6, 0x4b, 0x6f, 0x31, 0x75, 0x8f, 0xee, 0x0a,
+	0x22, 0xa9, 0x9e, 0x6a, 0xaa, 0x9e, 0x2f, 0x12, 0xc2, 0x34, 0x7a, 0x7d, 0x9f, 0xa6, 0x34, 0xcb,
+	0xd2, 0x6e, 0x1b, 0xb1, 0x9f, 0x60, 0x4b, 0x3e, 0xa5, 0x88, 0xb1, 0x27, 0x12, 0x63, 0xed, 0xb5,
+	0x48, 0xb6, 0x93, 0x43, 0xf6, 0xb7, 0x02, 0x35, 0xb6, 0x70, 0x43, 0xca, 0x76, 0xa1, 0xe1, 0x78,
+	0x8b, 0xa9, 0x50, 0xd0, 0x7a, 0x34, 0x8f, 0x4c, 0xd7, 0x13, 0x96, 0xa4, 0xab, 0x09, 0xe9, 0x46,
+	0xe7, 0xf9, 0x01, 0x1e, 0x31, 0x4b, 0x8d, 0x9d, 0xe7, 0x07, 0xf8, 0x3d, 0x35, 0xae, 0xa1, 0xac,
+	0x4b, 0x50, 0x86, 0xfc, 0xe3, 0x93, 0xd4, 0xa7, 0x14, 0x95, 0x5f, 0x48, 0x54, 0xee, 0x16, 0xdd,
+	0x70, 0x8c, 0xe5, 0x7b, 0x40, 0xef, 0xec, 0x15, 0x8e, 0x1b, 0x3e, 0x87, 0xf2, 0x73, 0xa8, 0xf3,
+	0xea, 0x65, 0x4f, 0x8c, 0x5d, 0x63, 0x0f, 0xb4, 0x03, 0x9a, 0xe7, 0x8f, 0xdc, 0x09, 0x2f, 0xac,
+	0xea, 0xf9, 0xaf, 0x26, 0xe6, 0x4b, 0xd8, 0x91, 0xe2, 0x96, 0xc9, 0xc5, 0x7c, 0x03, 0xed, 0x28,
+	0x08, 0x6b, 0x2d, 0x5c, 0xda, 0x53, 0xd0, 0xe8, 0xcd, 0xf1, 0xed, 0x99, 0x0e, 0xc4, 0xac, 0xf9,
+	0xa2, 0x5e, 0xc0, 0xb6, 0x10, 0xaf, 0x94, 0x24, 0x8b, 0x85, 0xe0, 0x24, 0x72, 0x4d, 0x3d, 0xa8,
+	0x39, 0x74, 0x81, 0x07, 0xc8, 0x22, 0xcb, 0xed, 0xf9, 0xb2, 0x06, 0xec, 0x0e, 0xe2, 0x98, 0xa5,
+	0x74, 0x9d, 0x29, 0xb0, 0x7d, 0x18, 0xe0, 0xc3, 0xe5, 0x78, 0xe6, 0x86, 0xc7, 0xb1, 0xb0, 0x3b,
+	0xfb, 0x61, 0x48, 0x80, 0xab, 0x29, 0xc0, 0x93, 0x24, 0x35, 0x39, 0x49, 0x51, 0x5f, 0xa9, 0x24,
+	0x7f, 0x85, 0x07, 0xff, 0x57, 0x82, 0x49, 0x0e, 0xaa, 0x90, 0xc3, 0x77, 0xb0, 0x75, 0xb3, 0x04,
+	0xe6, 0xfc, 0x1d, 0x21, 0xe3, 0x73, 0x57, 0x49, 0x98, 0xae, 0xf4, 0xc9, 0x29, 0xd9, 0x50, 0x9e,
+	0x48, 0x0d, 0x25, 0xa7, 0x1b, 0x47, 0xd6, 0x83, 0x3f, 0x34, 0x80, 0xa1, 0xe3, 0xbc, 0xc3, 0xc1,
+	0xca, 0x75, 0x30, 0xb2, 0xe0, 0x03, 0xe9, 0x2d, 0x85, 0x8c, 0xcd, 0x6f, 0x60, 0xfd, 0x71, 0xa1,
+	0x9d, 0x89, 0x36, 0x2b, 0xe8, 0x47, 0x68, 0x09, 0x5f, 0x56, 0xb4, 0xb7, 0xe9, 0x79, 0xa4, 0xef,
+	0x17, 0x58, 0x93, 0x68, 0x6f, 0xe1, 0xbe, 0xd8, 0x11, 0xd1, 0xfe, 0xc6, 0x6f, 0xa1, 0x6e, 0x14,
+	0x99, 0x45, 0x79, 0x42, 0xc7, 0x13, 0xe5, 0x65, 0x1b, 0xac, 0x28, 0x2f, 0xa7, 0x4d, 0x9a, 0x15,
+	0x34, 0x84, 0x66, 0xd2, 0xaa, 0x90, 0x2e, 0x7b, 0x8b, 0xfd, 0x50, 0x7f, 0x94, 0x6b, 0x4b, 0xe2,
+	0xbc, 0x02, 0x58, 0xf7, 0x16, 0x94, 0x72, 0x96, 0x30, 0xd4, 0xf7, 0xf2, 0x8d, 0x62, 0xa8, 0xf5,
+	0x2f, 0x58, 0x0c, 0x95, 0xe9, 0x3b, 0x62, 0xa8, 0xec, 0x8f, 0xde, 0xac, 0xa0, 0xe7, 0x50, 0x8f,
+	0xe3, 0x08, 0xef, 0xa6, 0x54, 0x90, 0xdd, 0x1c, 0x4b, 0x06, 0x06, 0x9e, 0xd8, 0x5e, 0xee, 0xf5,
+	0x14, 0xc1, 0x90, 0x4e, 0x6d, 0xd0, 0xf9, 0xeb, 0xd2, 0x50, 0xce, 0x2f, 0x0d, 0xe5, 0xe2, 0xd2,
+	0x50, 0x7e, 0xbf, 0x32, 0x2a, 0xe7, 0x57, 0x46, 0xe5, 0x9f, 0x2b, 0xa3, 0x32, 0xae, 0xd1, 0x3f,
+	0x95, 0x5f, 0xfd, 0x17, 0x00, 0x00, 0xff, 0xff, 0xf8, 0x0d, 0x82, 0xd6, 0x61, 0x0e, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1652,7 +1596,7 @@ type FccServiceClient interface {
 	SaveConfig(ctx context.Context, in *SaveConfigRequest, opts ...grpc.CallOption) (*SaveConfigResponse, error)
 	PrePublish(ctx context.Context, in *PrePublishRequest, opts ...grpc.CallOption) (*PrePublishResponse, error)
 	Publish(ctx context.Context, in *PublishRequest, opts ...grpc.CallOption) (*PublishResponse, error)
-	FetchMiniConfig(ctx context.Context, in *FetchMiniConfigRequest, opts ...grpc.CallOption) (*FetchMiniConfigResponse, error)
+	FetchConfig(ctx context.Context, in *FetchConfigRequest, opts ...grpc.CallOption) (*FetchConfigResponse, error)
 }
 
 type fccServiceClient struct {
@@ -1735,9 +1679,9 @@ func (c *fccServiceClient) Publish(ctx context.Context, in *PublishRequest, opts
 	return out, nil
 }
 
-func (c *fccServiceClient) FetchMiniConfig(ctx context.Context, in *FetchMiniConfigRequest, opts ...grpc.CallOption) (*FetchMiniConfigResponse, error) {
-	out := new(FetchMiniConfigResponse)
-	err := c.cc.Invoke(ctx, "/fcc.serv.FccService/FetchMiniConfig", in, out, opts...)
+func (c *fccServiceClient) FetchConfig(ctx context.Context, in *FetchConfigRequest, opts ...grpc.CallOption) (*FetchConfigResponse, error) {
+	out := new(FetchConfigResponse)
+	err := c.cc.Invoke(ctx, "/fcc.serv.FccService/FetchConfig", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1754,7 +1698,7 @@ type FccServiceServer interface {
 	SaveConfig(context.Context, *SaveConfigRequest) (*SaveConfigResponse, error)
 	PrePublish(context.Context, *PrePublishRequest) (*PrePublishResponse, error)
 	Publish(context.Context, *PublishRequest) (*PublishResponse, error)
-	FetchMiniConfig(context.Context, *FetchMiniConfigRequest) (*FetchMiniConfigResponse, error)
+	FetchConfig(context.Context, *FetchConfigRequest) (*FetchConfigResponse, error)
 }
 
 // UnimplementedFccServiceServer can be embedded to have forward compatible implementations.
@@ -1785,8 +1729,8 @@ func (*UnimplementedFccServiceServer) PrePublish(ctx context.Context, req *PrePu
 func (*UnimplementedFccServiceServer) Publish(ctx context.Context, req *PublishRequest) (*PublishResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Publish not implemented")
 }
-func (*UnimplementedFccServiceServer) FetchMiniConfig(ctx context.Context, req *FetchMiniConfigRequest) (*FetchMiniConfigResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method FetchMiniConfig not implemented")
+func (*UnimplementedFccServiceServer) FetchConfig(ctx context.Context, req *FetchConfigRequest) (*FetchConfigResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FetchConfig not implemented")
 }
 
 func RegisterFccServiceServer(s *grpc.Server, srv FccServiceServer) {
@@ -1937,20 +1881,20 @@ func _FccService_Publish_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FccService_FetchMiniConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(FetchMiniConfigRequest)
+func _FccService_FetchConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FetchConfigRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FccServiceServer).FetchMiniConfig(ctx, in)
+		return srv.(FccServiceServer).FetchConfig(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/fcc.serv.FccService/FetchMiniConfig",
+		FullMethod: "/fcc.serv.FccService/FetchConfig",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FccServiceServer).FetchMiniConfig(ctx, req.(*FetchMiniConfigRequest))
+		return srv.(FccServiceServer).FetchConfig(ctx, req.(*FetchConfigRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1992,8 +1936,8 @@ var _FccService_serviceDesc = grpc.ServiceDesc{
 			Handler:    _FccService_Publish_Handler,
 		},
 		{
-			MethodName: "FetchMiniConfig",
-			Handler:    _FccService_FetchMiniConfig_Handler,
+			MethodName: "FetchConfig",
+			Handler:    _FccService_FetchConfig_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -2055,19 +1999,24 @@ func (m *FetchProjectsRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.ProjectName) > 0 {
-		i -= len(m.ProjectName)
-		copy(dAtA[i:], m.ProjectName)
-		i = encodeVarintFcc(dAtA, i, uint64(len(m.ProjectName)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if len(m.ProjectKey) > 0 {
-		i -= len(m.ProjectKey)
-		copy(dAtA[i:], m.ProjectKey)
-		i = encodeVarintFcc(dAtA, i, uint64(len(m.ProjectKey)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.Filter) > 0 {
+		for k := range m.Filter {
+			v := m.Filter[k]
+			baseI := i
+			i -= len(v)
+			copy(dAtA[i:], v)
+			i = encodeVarintFcc(dAtA, i, uint64(len(v)))
+			i--
+			dAtA[i] = 0x12
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarintFcc(dAtA, i, uint64(len(k)))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarintFcc(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x1a
+		}
 	}
 	if m.Offset != 0 {
 		i = encodeVarintFcc(dAtA, i, uint64(m.Offset))
@@ -2240,19 +2189,24 @@ func (m *FetchGroupsRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.GroupName) > 0 {
-		i -= len(m.GroupName)
-		copy(dAtA[i:], m.GroupName)
-		i = encodeVarintFcc(dAtA, i, uint64(len(m.GroupName)))
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.GroupKey) > 0 {
-		i -= len(m.GroupKey)
-		copy(dAtA[i:], m.GroupKey)
-		i = encodeVarintFcc(dAtA, i, uint64(len(m.GroupKey)))
-		i--
-		dAtA[i] = 0x22
+	if len(m.Filter) > 0 {
+		for k := range m.Filter {
+			v := m.Filter[k]
+			baseI := i
+			i -= len(v)
+			copy(dAtA[i:], v)
+			i = encodeVarintFcc(dAtA, i, uint64(len(v)))
+			i--
+			dAtA[i] = 0x12
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarintFcc(dAtA, i, uint64(len(k)))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarintFcc(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x22
+		}
 	}
 	if len(m.ProjectKey) > 0 {
 		i -= len(m.ProjectKey)
@@ -2439,12 +2393,24 @@ func (m *FetchConfigsRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.ConfKey) > 0 {
-		i -= len(m.ConfKey)
-		copy(dAtA[i:], m.ConfKey)
-		i = encodeVarintFcc(dAtA, i, uint64(len(m.ConfKey)))
-		i--
-		dAtA[i] = 0x2a
+	if len(m.Filter) > 0 {
+		for k := range m.Filter {
+			v := m.Filter[k]
+			baseI := i
+			i -= len(v)
+			copy(dAtA[i:], v)
+			i = encodeVarintFcc(dAtA, i, uint64(len(v)))
+			i--
+			dAtA[i] = 0x12
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarintFcc(dAtA, i, uint64(len(k)))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarintFcc(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x2a
+		}
 	}
 	if len(m.GroupKey) > 0 {
 		i -= len(m.GroupKey)
@@ -3042,7 +3008,7 @@ func (m *PublishResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *FetchMiniConfigRequest) Marshal() (dAtA []byte, err error) {
+func (m *FetchConfigRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -3052,12 +3018,12 @@ func (m *FetchMiniConfigRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *FetchMiniConfigRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *FetchConfigRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *FetchMiniConfigRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *FetchConfigRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3086,7 +3052,7 @@ func (m *FetchMiniConfigRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) 
 	return len(dAtA) - i, nil
 }
 
-func (m *MiniConfig) Marshal() (dAtA []byte, err error) {
+func (m *FetchConfigResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -3096,42 +3062,12 @@ func (m *MiniConfig) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MiniConfig) MarshalTo(dAtA []byte) (int, error) {
+func (m *FetchConfigResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MiniConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Value) > 0 {
-		i -= len(m.Value)
-		copy(dAtA[i:], m.Value)
-		i = encodeVarintFcc(dAtA, i, uint64(len(m.Value)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *FetchMiniConfigResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *FetchMiniConfigResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *FetchMiniConfigResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *FetchConfigResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3202,13 +3138,13 @@ func (m *FetchProjectsRequest) Size() (n int) {
 	if m.Offset != 0 {
 		n += 1 + sovFcc(uint64(m.Offset))
 	}
-	l = len(m.ProjectKey)
-	if l > 0 {
-		n += 1 + l + sovFcc(uint64(l))
-	}
-	l = len(m.ProjectName)
-	if l > 0 {
-		n += 1 + l + sovFcc(uint64(l))
+	if len(m.Filter) > 0 {
+		for k, v := range m.Filter {
+			_ = k
+			_ = v
+			mapEntrySize := 1 + len(k) + sovFcc(uint64(len(k))) + 1 + len(v) + sovFcc(uint64(len(v)))
+			n += mapEntrySize + 1 + sovFcc(uint64(mapEntrySize))
+		}
 	}
 	return n
 }
@@ -3288,13 +3224,13 @@ func (m *FetchGroupsRequest) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovFcc(uint64(l))
 	}
-	l = len(m.GroupKey)
-	if l > 0 {
-		n += 1 + l + sovFcc(uint64(l))
-	}
-	l = len(m.GroupName)
-	if l > 0 {
-		n += 1 + l + sovFcc(uint64(l))
+	if len(m.Filter) > 0 {
+		for k, v := range m.Filter {
+			_ = k
+			_ = v
+			mapEntrySize := 1 + len(k) + sovFcc(uint64(len(k))) + 1 + len(v) + sovFcc(uint64(len(v)))
+			n += mapEntrySize + 1 + sovFcc(uint64(mapEntrySize))
+		}
 	}
 	return n
 }
@@ -3382,9 +3318,13 @@ func (m *FetchConfigsRequest) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovFcc(uint64(l))
 	}
-	l = len(m.ConfKey)
-	if l > 0 {
-		n += 1 + l + sovFcc(uint64(l))
+	if len(m.Filter) > 0 {
+		for k, v := range m.Filter {
+			_ = k
+			_ = v
+			mapEntrySize := 1 + len(k) + sovFcc(uint64(len(k))) + 1 + len(v) + sovFcc(uint64(len(v)))
+			n += mapEntrySize + 1 + sovFcc(uint64(mapEntrySize))
+		}
 	}
 	return n
 }
@@ -3630,7 +3570,7 @@ func (m *PublishResponse) Size() (n int) {
 	return n
 }
 
-func (m *FetchMiniConfigRequest) Size() (n int) {
+func (m *FetchConfigRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3651,20 +3591,7 @@ func (m *FetchMiniConfigRequest) Size() (n int) {
 	return n
 }
 
-func (m *MiniConfig) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Value)
-	if l > 0 {
-		n += 1 + l + sovFcc(uint64(l))
-	}
-	return n
-}
-
-func (m *FetchMiniConfigResponse) Size() (n int) {
+func (m *FetchConfigResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3857,9 +3784,9 @@ func (m *FetchProjectsRequest) Unmarshal(dAtA []byte) error {
 			}
 		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ProjectKey", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Filter", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowFcc
@@ -3869,55 +3796,118 @@ func (m *FetchProjectsRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthFcc
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthFcc
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ProjectKey = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ProjectName", wireType)
+			if m.Filter == nil {
+				m.Filter = make(map[string]string)
 			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowFcc
+			var mapkey string
+			var mapvalue string
+			for iNdEx < postIndex {
+				entryPreIndex := iNdEx
+				var wire uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowFcc
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					wire |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
 				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
+				fieldNum := int32(wire >> 3)
+				if fieldNum == 1 {
+					var stringLenmapkey uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowFcc
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapkey |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapkey := int(stringLenmapkey)
+					if intStringLenmapkey < 0 {
+						return ErrInvalidLengthFcc
+					}
+					postStringIndexmapkey := iNdEx + intStringLenmapkey
+					if postStringIndexmapkey < 0 {
+						return ErrInvalidLengthFcc
+					}
+					if postStringIndexmapkey > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+					iNdEx = postStringIndexmapkey
+				} else if fieldNum == 2 {
+					var stringLenmapvalue uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowFcc
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapvalue |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapvalue := int(stringLenmapvalue)
+					if intStringLenmapvalue < 0 {
+						return ErrInvalidLengthFcc
+					}
+					postStringIndexmapvalue := iNdEx + intStringLenmapvalue
+					if postStringIndexmapvalue < 0 {
+						return ErrInvalidLengthFcc
+					}
+					if postStringIndexmapvalue > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapvalue = string(dAtA[iNdEx:postStringIndexmapvalue])
+					iNdEx = postStringIndexmapvalue
+				} else {
+					iNdEx = entryPreIndex
+					skippy, err := skipFcc(dAtA[iNdEx:])
+					if err != nil {
+						return err
+					}
+					if (skippy < 0) || (iNdEx+skippy) < 0 {
+						return ErrInvalidLengthFcc
+					}
+					if (iNdEx + skippy) > postIndex {
+						return io.ErrUnexpectedEOF
+					}
+					iNdEx += skippy
 				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthFcc
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthFcc
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.ProjectName = string(dAtA[iNdEx:postIndex])
+			m.Filter[mapkey] = mapvalue
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -4431,9 +4421,9 @@ func (m *FetchGroupsRequest) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field GroupKey", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Filter", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowFcc
@@ -4443,55 +4433,118 @@ func (m *FetchGroupsRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthFcc
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthFcc
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.GroupKey = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 5:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field GroupName", wireType)
+			if m.Filter == nil {
+				m.Filter = make(map[string]string)
 			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowFcc
+			var mapkey string
+			var mapvalue string
+			for iNdEx < postIndex {
+				entryPreIndex := iNdEx
+				var wire uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowFcc
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					wire |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
 				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
+				fieldNum := int32(wire >> 3)
+				if fieldNum == 1 {
+					var stringLenmapkey uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowFcc
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapkey |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapkey := int(stringLenmapkey)
+					if intStringLenmapkey < 0 {
+						return ErrInvalidLengthFcc
+					}
+					postStringIndexmapkey := iNdEx + intStringLenmapkey
+					if postStringIndexmapkey < 0 {
+						return ErrInvalidLengthFcc
+					}
+					if postStringIndexmapkey > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+					iNdEx = postStringIndexmapkey
+				} else if fieldNum == 2 {
+					var stringLenmapvalue uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowFcc
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapvalue |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapvalue := int(stringLenmapvalue)
+					if intStringLenmapvalue < 0 {
+						return ErrInvalidLengthFcc
+					}
+					postStringIndexmapvalue := iNdEx + intStringLenmapvalue
+					if postStringIndexmapvalue < 0 {
+						return ErrInvalidLengthFcc
+					}
+					if postStringIndexmapvalue > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapvalue = string(dAtA[iNdEx:postStringIndexmapvalue])
+					iNdEx = postStringIndexmapvalue
+				} else {
+					iNdEx = entryPreIndex
+					skippy, err := skipFcc(dAtA[iNdEx:])
+					if err != nil {
+						return err
+					}
+					if (skippy < 0) || (iNdEx+skippy) < 0 {
+						return ErrInvalidLengthFcc
+					}
+					if (iNdEx + skippy) > postIndex {
+						return io.ErrUnexpectedEOF
+					}
+					iNdEx += skippy
 				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthFcc
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthFcc
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.GroupName = string(dAtA[iNdEx:postIndex])
+			m.Filter[mapkey] = mapvalue
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -5069,9 +5122,9 @@ func (m *FetchConfigsRequest) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 5:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ConfKey", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Filter", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowFcc
@@ -5081,23 +5134,118 @@ func (m *FetchConfigsRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthFcc
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthFcc
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ConfKey = string(dAtA[iNdEx:postIndex])
+			if m.Filter == nil {
+				m.Filter = make(map[string]string)
+			}
+			var mapkey string
+			var mapvalue string
+			for iNdEx < postIndex {
+				entryPreIndex := iNdEx
+				var wire uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowFcc
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					wire |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				fieldNum := int32(wire >> 3)
+				if fieldNum == 1 {
+					var stringLenmapkey uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowFcc
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapkey |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapkey := int(stringLenmapkey)
+					if intStringLenmapkey < 0 {
+						return ErrInvalidLengthFcc
+					}
+					postStringIndexmapkey := iNdEx + intStringLenmapkey
+					if postStringIndexmapkey < 0 {
+						return ErrInvalidLengthFcc
+					}
+					if postStringIndexmapkey > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+					iNdEx = postStringIndexmapkey
+				} else if fieldNum == 2 {
+					var stringLenmapvalue uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowFcc
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapvalue |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapvalue := int(stringLenmapvalue)
+					if intStringLenmapvalue < 0 {
+						return ErrInvalidLengthFcc
+					}
+					postStringIndexmapvalue := iNdEx + intStringLenmapvalue
+					if postStringIndexmapvalue < 0 {
+						return ErrInvalidLengthFcc
+					}
+					if postStringIndexmapvalue > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapvalue = string(dAtA[iNdEx:postStringIndexmapvalue])
+					iNdEx = postStringIndexmapvalue
+				} else {
+					iNdEx = entryPreIndex
+					skippy, err := skipFcc(dAtA[iNdEx:])
+					if err != nil {
+						return err
+					}
+					if (skippy < 0) || (iNdEx+skippy) < 0 {
+						return ErrInvalidLengthFcc
+					}
+					if (iNdEx + skippy) > postIndex {
+						return io.ErrUnexpectedEOF
+					}
+					iNdEx += skippy
+				}
+			}
+			m.Filter[mapkey] = mapvalue
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -6778,7 +6926,7 @@ func (m *PublishResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *FetchMiniConfigRequest) Unmarshal(dAtA []byte) error {
+func (m *FetchConfigRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -6801,10 +6949,10 @@ func (m *FetchMiniConfigRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: FetchMiniConfigRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: FetchConfigRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: FetchMiniConfigRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: FetchConfigRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -6924,7 +7072,7 @@ func (m *FetchMiniConfigRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MiniConfig) Unmarshal(dAtA []byte) error {
+func (m *FetchConfigResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -6947,92 +7095,10 @@ func (m *MiniConfig) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MiniConfig: wiretype end group for non-group")
+			return fmt.Errorf("proto: FetchConfigResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MiniConfig: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Value", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowFcc
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthFcc
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthFcc
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Value = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipFcc(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthFcc
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *FetchMiniConfigResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowFcc
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: FetchMiniConfigResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: FetchMiniConfigResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: FetchConfigResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -7101,7 +7167,7 @@ func (m *FetchMiniConfigResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Data == nil {
-				m.Data = &MiniConfig{}
+				m.Data = &Config{}
 			}
 			if err := m.Data.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err

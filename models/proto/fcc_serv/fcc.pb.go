@@ -4,8 +4,12 @@
 package fcc_serv
 
 import (
+	context "context"
 	fmt "fmt"
 	proto "github.com/gogo/protobuf/proto"
+	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	io "io"
 	math "math"
 	math_bits "math/bits"
@@ -909,6 +913,194 @@ var fileDescriptor_690ecd8b3e17edf8 = []byte{
 	0x6b, 0x2a, 0xe6, 0xcc, 0x27, 0xfa, 0xd7, 0xa9, 0x41, 0x2e, 0xa7, 0x06, 0xf9, 0x39, 0x35, 0xc8,
 	0xc7, 0x99, 0x91, 0xbb, 0x9c, 0x19, 0xb9, 0xef, 0x33, 0x23, 0xd7, 0x2e, 0xf1, 0xaf, 0xf9, 0xe3,
 	0x5f, 0x01, 0x00, 0x00, 0xff, 0xff, 0x84, 0xe8, 0xf6, 0x69, 0xda, 0x07, 0x00, 0x00,
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConn
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion4
+
+// FccServiceClient is the client API for FccService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type FccServiceClient interface {
+	FetchProjects(ctx context.Context, in *FetchProjectsRequest, opts ...grpc.CallOption) (*FetchProjectsResponse, error)
+	FetchGroups(ctx context.Context, in *FetchGroupsRequest, opts ...grpc.CallOption) (*FetchGroupsResponse, error)
+	FetchConfigs(ctx context.Context, in *FetchConfigsRequest, opts ...grpc.CallOption) (*FetchConfigsResponse, error)
+	FetchMiniConfig(ctx context.Context, in *FetchMiniConfigRequest, opts ...grpc.CallOption) (*FetchMiniConfigResponse, error)
+}
+
+type fccServiceClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewFccServiceClient(cc *grpc.ClientConn) FccServiceClient {
+	return &fccServiceClient{cc}
+}
+
+func (c *fccServiceClient) FetchProjects(ctx context.Context, in *FetchProjectsRequest, opts ...grpc.CallOption) (*FetchProjectsResponse, error) {
+	out := new(FetchProjectsResponse)
+	err := c.cc.Invoke(ctx, "/fcc.serv.FccService/FetchProjects", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *fccServiceClient) FetchGroups(ctx context.Context, in *FetchGroupsRequest, opts ...grpc.CallOption) (*FetchGroupsResponse, error) {
+	out := new(FetchGroupsResponse)
+	err := c.cc.Invoke(ctx, "/fcc.serv.FccService/FetchGroups", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *fccServiceClient) FetchConfigs(ctx context.Context, in *FetchConfigsRequest, opts ...grpc.CallOption) (*FetchConfigsResponse, error) {
+	out := new(FetchConfigsResponse)
+	err := c.cc.Invoke(ctx, "/fcc.serv.FccService/FetchConfigs", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *fccServiceClient) FetchMiniConfig(ctx context.Context, in *FetchMiniConfigRequest, opts ...grpc.CallOption) (*FetchMiniConfigResponse, error) {
+	out := new(FetchMiniConfigResponse)
+	err := c.cc.Invoke(ctx, "/fcc.serv.FccService/FetchMiniConfig", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// FccServiceServer is the server API for FccService service.
+type FccServiceServer interface {
+	FetchProjects(context.Context, *FetchProjectsRequest) (*FetchProjectsResponse, error)
+	FetchGroups(context.Context, *FetchGroupsRequest) (*FetchGroupsResponse, error)
+	FetchConfigs(context.Context, *FetchConfigsRequest) (*FetchConfigsResponse, error)
+	FetchMiniConfig(context.Context, *FetchMiniConfigRequest) (*FetchMiniConfigResponse, error)
+}
+
+// UnimplementedFccServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedFccServiceServer struct {
+}
+
+func (*UnimplementedFccServiceServer) FetchProjects(ctx context.Context, req *FetchProjectsRequest) (*FetchProjectsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FetchProjects not implemented")
+}
+func (*UnimplementedFccServiceServer) FetchGroups(ctx context.Context, req *FetchGroupsRequest) (*FetchGroupsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FetchGroups not implemented")
+}
+func (*UnimplementedFccServiceServer) FetchConfigs(ctx context.Context, req *FetchConfigsRequest) (*FetchConfigsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FetchConfigs not implemented")
+}
+func (*UnimplementedFccServiceServer) FetchMiniConfig(ctx context.Context, req *FetchMiniConfigRequest) (*FetchMiniConfigResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FetchMiniConfig not implemented")
+}
+
+func RegisterFccServiceServer(s *grpc.Server, srv FccServiceServer) {
+	s.RegisterService(&_FccService_serviceDesc, srv)
+}
+
+func _FccService_FetchProjects_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FetchProjectsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FccServiceServer).FetchProjects(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fcc.serv.FccService/FetchProjects",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FccServiceServer).FetchProjects(ctx, req.(*FetchProjectsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FccService_FetchGroups_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FetchGroupsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FccServiceServer).FetchGroups(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fcc.serv.FccService/FetchGroups",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FccServiceServer).FetchGroups(ctx, req.(*FetchGroupsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FccService_FetchConfigs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FetchConfigsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FccServiceServer).FetchConfigs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fcc.serv.FccService/FetchConfigs",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FccServiceServer).FetchConfigs(ctx, req.(*FetchConfigsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FccService_FetchMiniConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FetchMiniConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FccServiceServer).FetchMiniConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fcc.serv.FccService/FetchMiniConfig",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FccServiceServer).FetchMiniConfig(ctx, req.(*FetchMiniConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _FccService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "fcc.serv.FccService",
+	HandlerType: (*FccServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "FetchProjects",
+			Handler:    _FccService_FetchProjects_Handler,
+		},
+		{
+			MethodName: "FetchGroups",
+			Handler:    _FccService_FetchGroups_Handler,
+		},
+		{
+			MethodName: "FetchConfigs",
+			Handler:    _FccService_FetchConfigs_Handler,
+		},
+		{
+			MethodName: "FetchMiniConfig",
+			Handler:    _FccService_FetchMiniConfig_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "fcc.proto",
 }
 
 func (m *BaseRet) Marshal() (dAtA []byte, err error) {

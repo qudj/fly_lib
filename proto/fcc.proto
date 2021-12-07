@@ -1,0 +1,185 @@
+syntax = "proto3";
+
+package fcc.serv;
+
+service FccService {
+  rpc FetchProjects (FetchProjectsRequest) returns (FetchProjectsResponse){}
+
+  rpc FetchGroups (FetchGroupsRequest) returns (FetchGroupsResponse){}
+
+  rpc FetchConfigs (FetchConfigsRequest) returns (FetchConfigsResponse){}
+
+  rpc SaveProject (SaveProjectRequest) returns (SaveProjectResponse){}
+
+  rpc SaveGroup (SaveGroupRequest) returns (SaveGroupResponse){}
+
+  rpc SaveConfig (SaveConfigRequest) returns (SaveConfigResponse){}
+
+  rpc PrePublish (PrePublishRequest) returns (PrePublishResponse){}
+
+  rpc Publish (PublishRequest) returns (PublishResponse){}
+
+  rpc FetchConfig (FetchConfigRequest) returns (FetchConfigResponse){}
+}
+
+message BaseRet{
+  int64  code = 1;
+  string msg = 2;
+}
+
+// swagger:model
+message FetchProjectsRequest {
+  int64 limit = 1;
+  int64 offset = 2;
+  map<string,string> filter = 3;
+}
+
+message FetchProjectsRet {
+  int64 total = 1;
+  repeated Project list = 2;
+}
+
+message Project {
+  string project_key = 1;
+  string project_name = 2;
+  string description = 3;
+  int64 status = 4;
+}
+
+// swagger:model
+message FetchProjectsResponse {
+  BaseRet  base_ret = 1;
+  FetchProjectsRet data = 2;
+}
+
+// swagger:model
+message FetchGroupsRequest {
+  int64 limit = 1;
+  int64 offset = 2;
+  string project_key = 3;
+  map<string,string> filter = 4;
+}
+
+message FetchGroupsRet {
+  int64 total = 1;
+  repeated Group list = 2;
+}
+
+message Group {
+  string project_key = 1;
+  string group_key = 2;
+  string group_name = 3;
+  string description = 4;
+  int64 status = 5;
+}
+
+// swagger:model
+message FetchGroupsResponse {
+  BaseRet  base_ret = 1;
+  FetchGroupsRet data = 2;
+}
+
+// swagger:model
+message FetchConfigsRequest {
+  int64 limit = 1;
+  int64 offset = 2;
+  string project_key = 3;
+  string group_key = 4;
+  map<string,string> filter = 5;
+}
+
+message FetchConfigsRet {
+  int64 total = 1;
+  repeated Config list = 2;
+}
+
+message Config {
+  string project_key = 1;
+  string group_key = 2;
+  string conf_key = 3;
+  string description = 4;
+  string value = 5;
+  string pre_value = 6;
+  int64 status = 7;
+}
+
+// swagger:model
+message FetchConfigsResponse {
+  BaseRet  base_ret = 1;
+  FetchConfigsRet data = 2;
+}
+
+// swagger:model
+message SaveProjectRequest {
+  Project project = 1;
+  string op_id = 2;
+}
+
+// swagger:model
+message SaveProjectResponse {
+  BaseRet  base_ret = 1;
+}
+
+// swagger:model
+message SaveGroupRequest {
+  Group group = 1;
+  string op_id = 2;
+}
+
+// swagger:model
+message SaveGroupResponse {
+  BaseRet  base_ret = 1;
+}
+
+// swagger:model
+message SaveConfigRequest {
+  Config config = 1;
+  string op_id = 2;
+}
+
+// swagger:model
+message SaveConfigResponse {
+  BaseRet  base_ret = 1;
+}
+
+
+// swagger:model
+message PrePublishRequest {
+  string project_key = 1;
+  string group_key = 2;
+  string conf_key = 3;
+  string pre_value = 4;
+  string op_id = 5;
+}
+
+// swagger:model
+message PrePublishResponse {
+  BaseRet  base_ret = 1;
+}
+
+// swagger:model
+message PublishRequest {
+  string project_key = 1;
+  string group_key = 2;
+  string conf_key = 3;
+  string op_id = 4;
+}
+
+// swagger:model
+message PublishResponse {
+  BaseRet  base_ret = 1;
+}
+
+// swagger:model
+message FetchConfigRequest {
+  string project_key = 1;
+  string group_key = 2;
+  string conf_key = 3;
+}
+
+// swagger:model
+message FetchConfigResponse {
+  BaseRet  base_ret = 1;
+  Config   data = 2;
+}
+

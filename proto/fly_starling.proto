@@ -1,0 +1,197 @@
+syntax = "proto3";
+
+package fly.starling.serv;
+
+service StarlingService {
+  rpc FetchProjects (FetchProjectsRequest) returns (FetchProjectsResponse){}
+
+  rpc FetchGroups (FetchGroupsRequest) returns (FetchGroupsResponse){}
+
+  rpc FetchOriginLgs (FetchOriginLgsRequest) returns (FetchOriginLgsResponse){}
+
+  rpc FetchTransLgs (FetchTransLgsRequest) returns (FetchTransLgsResponse){}
+
+  rpc SaveProject (SaveProjectRequest) returns (SaveProjectResponse){}
+
+  rpc SaveGroup (SaveGroupRequest) returns (SaveGroupResponse){}
+
+  rpc SaveOriginLg (SaveOriginLgRequest) returns (SaveOriginLgResponse){}
+
+  rpc SaveTransLg (SaveTransLgRequest) returns (SaveTransLgResponse){}
+
+  rpc FetchTransLg (FetchTransLgRequest) returns (FetchTransLgResponse){}
+}
+
+message BaseRet{
+  int64  code = 1;
+  string msg = 2;
+}
+
+// swagger:model
+message FetchProjectsRequest {
+  int64 limit = 1;
+  int64 offset = 2;
+  map<string,string> filter = 3;
+}
+
+message FetchProjectsRet {
+  int64 total = 1;
+  repeated Project list = 2;
+}
+
+message Project {
+  string project_key = 1;
+  string project_name = 2;
+  string description = 3;
+  int64 status = 4;
+}
+
+// swagger:model
+message FetchProjectsResponse {
+  BaseRet  base_ret = 1;
+  FetchProjectsRet data = 2;
+}
+
+// swagger:model
+message FetchGroupsRequest {
+  int64 limit = 1;
+  int64 offset = 2;
+  string project_key = 3;
+  map<string,string> filter = 4;
+}
+
+message FetchGroupsRet {
+  int64 total = 1;
+  repeated Group list = 2;
+}
+
+message Group {
+  string project_key = 1;
+  string group_key = 2;
+  string group_name = 3;
+  string description = 4;
+  int64 status = 5;
+}
+
+// swagger:model
+message FetchGroupsResponse {
+  BaseRet  base_ret = 1;
+  FetchGroupsRet data = 2;
+}
+
+// swagger:model
+message FetchOriginLgsRequest {
+  int64 limit = 1;
+  int64 offset = 2;
+  string project_key = 3;
+  string group_key = 4;
+  map<string,string> filter = 5;
+}
+
+message FetchOriginLgsRet {
+  int64 total = 1;
+  repeated OriginLg list = 2;
+}
+
+message OriginLg {
+  string project_key = 1;
+  string group_key = 2;
+  string lang_key = 3;
+  string lang = 4;
+  string origin_text = 5;
+  int64 status = 6;
+}
+
+// swagger:model
+message FetchOriginLgsResponse {
+  BaseRet  base_ret = 1;
+  FetchOriginLgsRet data = 2;
+}
+
+// swagger:model
+message FetchTransLgsRequest {
+  int64 limit = 1;
+  int64 offset = 2;
+  string project_key = 3;
+  string group_key = 4;
+  string lang_key = 5;
+  map<string,string> filter = 6;
+}
+
+message FetchTransLgsRet {
+  int64 total = 1;
+  repeated TransLg list = 2;
+}
+
+message TransLg {
+  string project_key = 1;
+  string group_key = 2;
+  string lang_key = 3;
+  string lang = 4;
+  string translate_text = 5;
+  int64 status = 6;
+}
+
+// swagger:model
+message FetchTransLgsResponse {
+  BaseRet  base_ret = 1;
+  FetchTransLgsRet data = 2;
+}
+
+// swagger:model
+message SaveProjectRequest {
+  Project project = 1;
+  string op_id = 2;
+}
+
+// swagger:model
+message SaveProjectResponse {
+  BaseRet  base_ret = 1;
+}
+
+// swagger:model
+message SaveGroupRequest {
+  Group group = 1;
+  string op_id = 2;
+}
+
+// swagger:model
+message SaveGroupResponse {
+  BaseRet  base_ret = 1;
+}
+
+// swagger:model
+message SaveOriginLgRequest {
+  OriginLg origin_lang = 1;
+  string op_id = 2;
+}
+
+// swagger:model
+message SaveOriginLgResponse {
+  BaseRet  base_ret = 1;
+}
+
+// swagger:model
+message SaveTransLgRequest {
+  TransLg trans_lang = 1;
+  string op_id = 2;
+}
+
+// swagger:model
+message SaveTransLgResponse {
+  BaseRet  base_ret = 1;
+}
+
+// swagger:model
+message FetchTransLgRequest {
+  string project_key = 1;
+  string group_key = 2;
+  string lang_key = 3;
+  string lang = 4;
+}
+
+// swagger:model
+message FetchTransLgResponse {
+  BaseRet  base_ret = 1;
+  TransLg   data = 2;
+}

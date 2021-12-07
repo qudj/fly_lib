@@ -19,7 +19,7 @@ service StarlingService {
 
   rpc SaveTransLg (SaveTransLgRequest) returns (SaveTransLgResponse){}
 
-  rpc FetchTransLg (FetchTransLgRequest) returns (FetchTransLgResponse){}
+  rpc FetchTransLgsByKey (FetchTransLgsByKeyRequest) returns (FetchTransLgsByKeyResponse){}
 }
 
 message BaseRet{
@@ -183,15 +183,15 @@ message SaveTransLgResponse {
 }
 
 // swagger:model
-message FetchTransLgRequest {
+message FetchTransLgsByKeyRequest {
   string project_key = 1;
   string group_key = 2;
-  string lang_key = 3;
+  repeated string lang_keys = 3;
   string lang = 4;
 }
 
 // swagger:model
-message FetchTransLgResponse {
+message FetchTransLgsByKeyResponse {
   BaseRet  base_ret = 1;
-  TransLg   data = 2;
+  repeated TransLg data = 2;
 }

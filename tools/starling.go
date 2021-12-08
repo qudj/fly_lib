@@ -14,13 +14,13 @@ import (
 )
 
 const (
-	defaultStarlingExpireTime = 60*10
+	defaultStarlingExpireTime = 10*time.Minute
 	defaultCapacity = 300
 )
 
 type StarlingTool struct {
 	client     servbp.StarlingServiceClient
-	expireTime int64
+	expireTime time.Duration
 	projectKey string
 	groupKey   string
 
@@ -45,7 +45,7 @@ func InitStarlingTool(host string, projectKey, groupKey string) *StarlingTool {
 	return ret
 }
 
-func (f *StarlingTool) SetExpireTime (expireTime int64) {
+func (f *StarlingTool) SetExpireTime (expireTime time.Duration) {
 	f.expireTime = expireTime
 }
 
@@ -59,7 +59,7 @@ func (f *StarlingTool) GetTrans(ctx context.Context, lang string, keys []string)
 	hasNot := make([]string, 0)
 	for _, key := range keys {
 		cKey := fmt.Sprintf("%s_%s", key, lang)
-		cacheRet, err := f.cache.Get(key)
+		cacheRet, err := f.cache.Get(cKey)
 		if err == nil && cacheRet != nil {
 			ret[cKey] = cacheRet.(string)
 			continue
@@ -80,16 +80,15 @@ func (f *StarlingTool) GetTrans(ctx context.Context, lang string, keys []string)
 		return f.client.FetchTransLgsByKey(ctx, req)
 	})
 	if err != nil {
-		fmt.Println(fmt.Sprintf("%v", err))
+		Logger().Errorf("FetchTransLgsByKey error=%+v", err)
 		return ret, err
 	}
 	res, _ := gsfRes.(*servbp.FetchTransLgsByKeyResponse)
 	if res != nil && len(res.Data) > 0 {
 		for _, v := range res.Data {
 			ret[v.LangKey] = v.TranslateText
-			expire := time.Duration(f.expireTime) * time.Second
 			cKey := fmt.Sprintf("%s_%s", v.LangKey, lang)
-			f.cache.SetWithExpire(cKey, v.TranslateText, expire)
+			f.cache.SetWithExpire(cKey, v.TranslateText, f.expireTime)
 		}
 	}
 	return ret, nil

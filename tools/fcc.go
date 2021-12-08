@@ -2,6 +2,7 @@ package tools
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"github.com/qudj/fly_lib/models/proto/fcc_serv"
 	"golang.org/x/sync/singleflight"
@@ -11,12 +12,12 @@ import (
 )
 
 const (
-	defaultFccExpireTime = 60*5
+	defaultFccExpireTime = 5*time.Minute
 )
 
 type FccConfTool struct {
 	client     fcc_serv.FccServiceClient
-	expireTime int64
+	expireTime time.Duration
 	projectKey string
 	groupKey   string
 
@@ -46,7 +47,7 @@ func InitFccConfTool(host string, projectKey, groupKey string) *FccConfTool {
 	return ret
 }
 
-func (f *FccConfTool) SetExpireTime(expireTime int64) {
+func (f *FccConfTool) SetExpireTime(expireTime time.Duration) {
 	f.expireTime = expireTime
 }
 
@@ -54,7 +55,7 @@ func (f *FccConfTool) GetValue(ctx context.Context, key string) (string, error) 
 	curTime := time.Now().Unix()
 	has, ok := f.confMap[key]
 	if ok {
-		if curTime-has.UpdateTime < f.expireTime {
+		if curTime-has.UpdateTime < int64(f.expireTime/time.Second) {
 			return has.Value, nil
 		}
 	}
@@ -66,12 +67,19 @@ func (f *FccConfTool) GetValue(ctx context.Context, key string) (string, error) 
 		}
 		res, err := f.client.FetchConfig(ctx, req)
 		if err != nil {
+			Logger().Errorf("FetchConfig req=%v, error=%+v", req, err)
 			return nil, err
+		}
+		if res == nil || res.BaseRet == nil || res.BaseRet.Code != 0 {
+			Logger().Errorf("FetchConfig req=%v, res=%v", req, res)
+			return nil, errors.New(fmt.Sprintf("%v", res))
 		}
 		return res.Data.Value, nil
 	})
 	if err != nil {
-		fmt.Println(err)
+		if ok {
+			return has.Value, err
+		}
 		return "", err
 	}
 

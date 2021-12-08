@@ -58,8 +58,9 @@ func (f *StarlingTool) GetTrans(ctx context.Context, lang string, keys []string)
 	ret := make(map[string]string, 0)
 	hasNot := make([]string, 0)
 	for _, key := range keys {
-		cKey := fmt.Sprintf("%s_%s", key, lang)
+		cKey := fmt.Sprintf("%s_%s", lang, key)
 		cacheRet, err := f.cache.Get(cKey)
+		fmt.Println(cKey, cacheRet, err)
 		if err == nil && cacheRet != nil {
 			ret[cKey] = cacheRet.(string)
 			continue
@@ -87,7 +88,8 @@ func (f *StarlingTool) GetTrans(ctx context.Context, lang string, keys []string)
 	if res != nil && len(res.Data) > 0 {
 		for _, v := range res.Data {
 			ret[v.LangKey] = v.TranslateText
-			cKey := fmt.Sprintf("%s_%s", v.LangKey, lang)
+			cKey := fmt.Sprintf("%s_%s", lang, v.LangKey)
+			fmt.Println(cKey, 111111)
 			f.cache.SetWithExpire(cKey, v.TranslateText, f.expireTime)
 		}
 	}

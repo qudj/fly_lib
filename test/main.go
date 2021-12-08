@@ -9,7 +9,7 @@ import (
 
 func main() {
 	ctx := context.Background()
-	sHost := "localhost:50053"
+	sHost := "localhost:50054"
 	sProjectKey := "project1"
 	sGroupKey := "group1"
 	starling := tools.InitStarlingTool(sHost, sProjectKey, sGroupKey)

@@ -1,6 +1,8 @@
 package tools
 
 import (
+	"context"
+	"fmt"
 	"go.uber.org/zap"
 )
 
@@ -23,4 +25,22 @@ func InitLogger(debug bool)  {
 
 func Logger() *zap.SugaredLogger {
 	return logger
+}
+
+func LogCtxInfo(ctx context.Context, template string, args ...interface{})  {
+	traceId, _ := ctx.Value("trace_id").(string)
+	template = fmt.Sprintf("trace_id: %s  %s", traceId, template)
+	logger.Infof(template, args)
+}
+
+func LogCtxWarn(ctx context.Context, template string, args ...interface{})  {
+	traceId, _ := ctx.Value("trace_id").(string)
+	template = fmt.Sprintf("trace_id: %s  %s", traceId, template)
+	logger.Warnf(template, args)
+}
+
+func LogCtxError(ctx context.Context, template string, args ...interface{})  {
+	traceId, _ := ctx.Value("trace_id").(string)
+	template = fmt.Sprintf("trace_id: %s  %s", traceId, template)
+	logger.Errorf(template, args)
 }

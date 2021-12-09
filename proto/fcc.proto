@@ -22,7 +22,7 @@ service FccService {
   rpc FetchConfig (FetchConfigRequest) returns (FetchConfigResponse){}
 }
 
-message BaseRet{
+message BaseRet {
   int64  code = 1;
   string msg = 2;
 }
@@ -110,10 +110,17 @@ message FetchConfigsResponse {
   FetchConfigsRet data = 2;
 }
 
+enum SaveMode {
+    UNKNOWN = 0;
+    ADD = 1;
+    UPDATE = 2;
+}
+
 // swagger:model
 message SaveProjectRequest {
   Project project = 1;
   string op_id = 2;
+  SaveMode   save_mode = 3;
 }
 
 // swagger:model
@@ -125,6 +132,7 @@ message SaveProjectResponse {
 message SaveGroupRequest {
   Group group = 1;
   string op_id = 2;
+  SaveMode   save_mode = 3;
 }
 
 // swagger:model
@@ -136,13 +144,13 @@ message SaveGroupResponse {
 message SaveConfigRequest {
   Config config = 1;
   string op_id = 2;
+  SaveMode   save_mode = 3;
 }
 
 // swagger:model
 message SaveConfigResponse {
   BaseRet  base_ret = 1;
 }
-
 
 // swagger:model
 message PrePublishRequest {

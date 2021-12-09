@@ -138,10 +138,17 @@ message FetchTransLgsResponse {
   FetchTransLgsRet data = 2;
 }
 
+enum SaveMode {
+    UNKNOWN = 0;
+    ADD = 1;
+    UPDATE = 2;
+}
+
 // swagger:model
 message SaveProjectRequest {
   Project project = 1;
   string op_id = 2;
+  SaveMode save_mode = 3;
 }
 
 // swagger:model
@@ -153,6 +160,7 @@ message SaveProjectResponse {
 message SaveGroupRequest {
   Group group = 1;
   string op_id = 2;
+  SaveMode save_mode = 3;
 }
 
 // swagger:model
@@ -164,6 +172,7 @@ message SaveGroupResponse {
 message SaveOriginLgRequest {
   OriginLg origin_lang = 1;
   string op_id = 2;
+  SaveMode save_mode = 3;
 }
 
 // swagger:model
@@ -175,6 +184,7 @@ message SaveOriginLgResponse {
 message SaveTransLgRequest {
   TransLg trans_lang = 1;
   string op_id = 2;
+  SaveMode save_mode = 3;
 }
 
 // swagger:model

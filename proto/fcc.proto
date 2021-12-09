@@ -101,6 +101,7 @@ message Config {
   string value = 5;
   string pre_value = 6;
   int64 status = 7;
+  int64 publish_status = 8;
 }
 
 // swagger:model

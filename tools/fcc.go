@@ -52,10 +52,18 @@ func (f *FccConfTool) SetExpireTime(expireTime time.Duration) {
 }
 
 func (f *FccConfTool) GetValue(ctx context.Context, key string) (string, error) {
+	return f.getValue(ctx, key, f.expireTime)
+}
+
+func (f *FccConfTool) GetValueWithExpire(ctx context.Context, key string, expireTime time.Duration) (string, error) {
+	return f.getValue(ctx, key, expireTime)
+}
+
+func (f *FccConfTool) getValue(ctx context.Context, key string, expireTime time.Duration) (string, error) {
 	curTime := time.Now().Unix()
 	has, ok := f.confMap[key]
 	if ok {
-		if curTime-has.UpdateTime < int64(f.expireTime/time.Second) {
+		if curTime-has.UpdateTime < int64(expireTime/time.Second) {
 			return has.Value, nil
 		}
 	}
@@ -92,3 +100,4 @@ func (f *FccConfTool) GetValue(ctx context.Context, key string) (string, error) 
 	f.mu.Unlock()
 	return value, nil
 }
+

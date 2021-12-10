@@ -44,6 +44,10 @@ message Project {
   string project_name = 2;
   string description = 3;
   int64 status = 4;
+  string op_id = 97;
+  string op_name = 98;
+  int64 create_time = 99;
+  int64 update_time = 100;
 }
 
 // swagger:model
@@ -71,6 +75,10 @@ message Group {
   string group_name = 3;
   string description = 4;
   int64 status = 5;
+  string op_id = 97;
+  string op_name = 98;
+  int64 create_time = 99;
+  int64 update_time = 100;
 }
 
 // swagger:model
@@ -100,6 +108,10 @@ message OriginLg {
   string lang = 4;
   string origin_text = 5;
   int64 status = 6;
+  string op_id = 97;
+  string op_name = 98;
+  int64 create_time = 99;
+  int64 update_time = 100;
 }
 
 // swagger:model
@@ -130,6 +142,10 @@ message TransLg {
   string lang = 4;
   string translate_text = 5;
   int64 status = 6;
+  string op_id = 97;
+  string op_name = 98;
+  int64 create_time = 99;
+  int64 update_time = 100;
 }
 
 // swagger:model
@@ -147,8 +163,7 @@ enum SaveMode {
 // swagger:model
 message SaveProjectRequest {
   Project project = 1;
-  string op_id = 2;
-  SaveMode save_mode = 3;
+  SaveMode save_mode = 2;
 }
 
 // swagger:model
@@ -159,8 +174,7 @@ message SaveProjectResponse {
 // swagger:model
 message SaveGroupRequest {
   Group group = 1;
-  string op_id = 2;
-  SaveMode save_mode = 3;
+  SaveMode save_mode = 2;
 }
 
 // swagger:model
@@ -171,8 +185,7 @@ message SaveGroupResponse {
 // swagger:model
 message SaveOriginLgRequest {
   OriginLg origin_lang = 1;
-  string op_id = 2;
-  SaveMode save_mode = 3;
+  SaveMode save_mode = 2;
 }
 
 // swagger:model
@@ -183,8 +196,7 @@ message SaveOriginLgResponse {
 // swagger:model
 message SaveTransLgRequest {
   TransLg trans_lang = 1;
-  string op_id = 2;
-  SaveMode save_mode = 3;
+  SaveMode save_mode = 2;
 }
 
 // swagger:model

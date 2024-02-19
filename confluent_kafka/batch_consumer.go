@@ -25,7 +25,7 @@ type (
 
 	BatchHandler func([]*kafka.Message) error
 
-	Consumer struct {
+	BatchConsumer struct {
 		Consumer   *kafka.Consumer
 		Topic      string
 		Quite      int
@@ -36,8 +36,8 @@ type (
 	}
 )
 
-func InitConsumer(cfg MQConfig) *Consumer {
-	kc := &Consumer{}
+func InitConsumer(cfg MQConfig) *BatchConsumer {
+	kc := &BatchConsumer{}
 	var (
 		consumer *kafka.Consumer
 	)
@@ -66,7 +66,7 @@ func InitConsumer(cfg MQConfig) *Consumer {
 	return kc
 }
 
-func (c *Consumer) Start(handler BatchHandler) {
+func (c *BatchConsumer) Start(handler BatchHandler) {
 	go c.ReceiveMsg(handler)
 	for {
 		if c.Quite > 0 {
@@ -90,7 +90,7 @@ func (c *Consumer) Start(handler BatchHandler) {
 	c.Quite = QuiteConsumer
 }
 
-func (c *Consumer) ReceiveMsg(handler BatchHandler) {
+func (c *BatchConsumer) ReceiveMsg(handler BatchHandler) {
 	sleepTime := time.Second
 	ticker := time.Tick(sleepTime)
 	needSend := false
@@ -147,7 +147,7 @@ func (c *Consumer) ReceiveMsg(handler BatchHandler) {
 	return
 }
 
-func (c *Consumer) Shutdown() {
+func (c *BatchConsumer) Shutdown() {
 	c.Quite = QuiteReceive
 	for {
 		if c.Quite == QuiteDealFunc {

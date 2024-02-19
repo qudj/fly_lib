@@ -15,15 +15,6 @@ type (
 		topic    string
 		producer *kafka.Producer
 	}
-
-	Msg struct {
-		Value     []byte
-		Key       []byte
-		MsgType   []byte
-		Timestamp int64
-		Partition kafka.TopicPartition
-		Header    []kafka.Header
-	}
 )
 
 func InitProducer(host, topic string, options ...KafkaConfOption) *KafkaMQSender {
@@ -64,9 +55,9 @@ func (k *KafkaMQSender) Send(msg *Msg) error {
 	deliveryChan := make(chan kafka.Event)
 	err := k.producer.Produce(&kafka.Message{
 		TopicPartition: kafka.TopicPartition{Topic: &k.topic, Partition: kafka.PartitionAny},
-		Value:          msg.Value,
-		Key:            msg.Key,
-		Headers:        msg.Header,
+		Value:          msg.Value(),
+		Key:            msg.Key(),
+		Headers:        msg.Header(),
 	}, deliveryChan)
 	if err != nil {
 		return err
@@ -84,16 +75,8 @@ func (k *KafkaMQSender) Send(msg *Msg) error {
 func (k *KafkaMQSender) AsyncSend(msg *Msg) error {
 	return k.producer.Produce(&kafka.Message{
 		TopicPartition: kafka.TopicPartition{Topic: &k.topic, Partition: kafka.PartitionAny},
-		Value:          msg.Value,
-		Key:            msg.Key,
-		Headers:        msg.Header,
+		Value:          msg.Value(),
+		Key:            msg.Key(),
+		Headers:        msg.Header(),
 	}, nil)
-}
-
-func NewMsg(value, key []byte, ts int64) *Msg {
-	return &Msg{
-		Value:     value,
-		Key:       key,
-		Timestamp: ts,
-	}
 }

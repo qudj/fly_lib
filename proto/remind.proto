@@ -1,0 +1,210 @@
+syntax = "proto3";
+
+package remind.serv;
+
+message BaseRet {
+  int64  code = 1;
+  string msg_key = 2;
+  string msg = 3;
+}
+
+message AddRemindRequest {
+    string user_id = 1;
+    string from_app = 2;
+    string base = 3;
+    string quote = 4;
+    string direction = 5;
+    string price = 6;
+    string repeat_switch = 7;
+}
+
+message AddRemindResponse {
+    string remind_id = 1;
+
+    BaseRet base_ret = 100;
+}
+
+message DeleteRemindRequest {
+    string user_id = 1;
+    string remind_id = 2;
+}
+
+message DeleteRemindResponse {
+    string remind_id = 1;
+
+    BaseRet base_ret = 100;
+}
+
+message FetchOpenRemindListRequest {
+    string user_id = 1;
+}
+
+message FetchOpenRemindListResponse {
+    repeated Remind list = 1;
+
+    BaseRet base_ret = 100;
+}
+
+message Remind {
+    string remind_id = 1;
+    string user_id = 2;
+    string from_app = 3;
+    string base = 4;
+    string quote = 5;
+    string direction = 6;
+    string price = 7;
+    string repeat_switch = 8;
+    int64  last_push_time = 9;
+    int64  create_time = 10;
+    int64  update_time = 11;
+}
+
+message ModifyUserRemindConfRequest {
+    string user_id = 1;
+    string from_app = 2;
+    string personal_remind_switch = 3;
+    string collect_remind_switch = 4;
+    string market_remind_switch = 5;
+    string announcement_switch = 6;
+    string system_msg_switch = 7;
+    string activity_msg_switch = 8;
+    string future_msg_switch = 9;
+    string bot_msg_switch = 10;
+    string hot_copy_msg_switch = 11;
+    string copy_motion_msg_switch = 12;
+    string financial_motion_msg_switch = 13;
+    string account_operation_msg_switch = 14;
+    string interaction_msg_switch = 15;
+    string c2c_trade_switch = 16;
+    string swapx_tx_switch = 17;
+}
+
+message ModifyUserRemindConfResponse {
+    BaseRet base_ret = 100;
+}
+
+message FetchUserRemindConfRequest {
+    string user_id = 1;
+}
+
+message FetchUserRemindConfResponse {
+    UserRemindConf data = 1;
+
+    BaseRet base_ret = 100;
+}
+
+message FetchUserRemindConfListRequest {
+    repeated string user_ids = 1;
+}
+
+message FetchUserRemindConfListResponse {
+    repeated UserRemindConf data = 1;
+
+    BaseRet base_ret = 100;
+}
+
+message UserRemindConf {
+    string user_id = 1;
+    string personal_remind_switch = 2;
+    string collect_remind_switch = 3;
+    string market_remind_switch = 4;
+    string announcement_switch = 5;
+    string system_msg_switch = 6;
+    string activity_msg_switch = 7;
+    string future_msg_switch = 8;
+    string bot_msg_switch = 9;
+    string hot_copy_msg_switch = 10;
+    string copy_motion_msg_switch = 11;
+    string financial_motion_msg_switch = 12;
+    string account_operation_msg_switch = 13;
+    string interaction_msg_switch = 14;
+    string c2c_trade_switch = 15;
+    string swapx_tx_switch = 16;
+}
+
+message ModifyUserTokenRequest {
+    string user_id = 1;
+    string platform = 2;
+    string token = 3;
+    string extra_token = 4;
+    string device_id = 5;
+    string package_name = 6;
+    string client_version = 7;
+    string region = 8;
+    string lang = 9;
+    string active = 10;
+    string from_app = 11;
+}
+
+message ModifyUserTokenResponse {
+    BaseRet base_ret = 100;
+}
+
+message InvalidTokensRequest {
+    repeated InvalidUserToken tokens = 1;
+}
+
+message InvalidTokensResponse {
+    BaseRet base_ret = 100;
+}
+
+message InvalidUserToken {
+    string user_id = 1;
+    string token = 3;
+}
+
+message FetchMsgTemplateRequest {
+    string template_comment = 1;
+}
+
+message FetchMsgTemplateResponse {
+    MsgTemplate data = 1;
+
+    BaseRet base_ret = 100;
+}
+
+message MsgTemplate {
+    string template_name = 1;
+    string msg_group = 2;
+    bool is_urgent = 3;
+    string nc_message_type = 4;
+    string nc_message_level = 5;
+    string nc_category = 6;
+    string nc_extra = 7;
+    repeated TemplateDetail details = 8;
+    repeated TemplateUri uris = 9;
+    string push_min_ver = 10;
+}
+
+message TemplateDetail {
+    string language = 1;
+    string title = 2;
+    string content = 3;
+    bool is_default = 4;
+    string nc_title = 5;
+    string nc_content = 6;
+}
+
+message TemplateUri {
+    string platform = 1;
+    string uri = 2;
+}
+
+service RemindService {
+    // remind
+    rpc AddRemind (AddRemindRequest) returns (AddRemindResponse) {}
+    rpc DeleteRemind (DeleteRemindRequest) returns (DeleteRemindResponse) {}
+    rpc FetchOpenRemindList (FetchOpenRemindListRequest) returns (FetchOpenRemindListResponse) {}
+
+    // remind conf
+    rpc ModifyUserRemindConf (ModifyUserRemindConfRequest) returns (ModifyUserRemindConfResponse) {}
+    rpc FetchUserRemindConf (FetchUserRemindConfRequest) returns (FetchUserRemindConfResponse) {}
+    rpc FetchUserRemindConfList (FetchUserRemindConfListRequest) returns (FetchUserRemindConfListResponse) {}
+
+    //user token set
+    rpc ModifyUserToken (ModifyUserTokenRequest) returns (ModifyUserTokenResponse) {}
+    rpc InvalidTokens (InvalidTokensRequest) returns (InvalidTokensResponse) {}
+
+    //template rpc
+    rpc FetchMsgTemplate (FetchMsgTemplateRequest) returns (FetchMsgTemplateResponse) {}
+}

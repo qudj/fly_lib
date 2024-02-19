@@ -15,24 +15,16 @@ const (
 )
 
 type (
-	MQConfig struct {
-		Host       string `mapstructure:"host"`
-		Topic      string `mapstructure:"topic"`
-		GroupId    string `mapstructure:"group_id"`
-		BatchNum   int    `mapstructure:"batch_num"`
-		AutoCommit bool   `mapstructure:"auto_commit"`
-	}
-
 	BatchHandler func([]*kafka.Message) error
 
 	BatchConsumer struct {
-		Consumer   *kafka.Consumer
-		Topic      string
-		Quite      int
-		Pause      bool
-		MsgChan    chan *kafka.Message
-		BatchNum   int
-		AutoCommit bool
+		Consumer    *kafka.Consumer
+		Topic       string
+		Quite       int
+		Pause       bool
+		MsgChan     chan *kafka.Message
+		BatchCommit int
+		AutoCommit  bool
 	}
 )
 
@@ -47,7 +39,7 @@ func InitConsumer(cfg MQConfig) *BatchConsumer {
 			"bootstrap.servers":  cfg.Host,
 			"group.id":           cfg.GroupId,
 			"auto.offset.reset":  "latest",
-			"enable.auto.commit": cfg.AutoCommit,
+			"enable.auto.commit": !cfg.ManualCommit,
 		})
 		return err
 	})
@@ -60,8 +52,8 @@ func InitConsumer(cfg MQConfig) *BatchConsumer {
 	}
 	kc.Consumer = consumer
 	kc.Topic = cfg.Topic
-	kc.BatchNum = cfg.BatchNum
-	kc.AutoCommit = cfg.AutoCommit
+	kc.BatchCommit = cfg.BatchCommit
+	kc.AutoCommit = !cfg.ManualCommit
 	kc.MsgChan = make(chan *kafka.Message)
 	return kc
 }
@@ -111,7 +103,7 @@ func (c *BatchConsumer) ReceiveMsg(handler BatchHandler) {
 			partitionMap[msg.TopicPartition.Partition] = msg.TopicPartition
 		}
 		msgNum := len(msgArray)
-		if msgNum >= c.BatchNum {
+		if msgNum >= c.BatchCommit {
 			needSend = true
 		}
 		if msgNum > 0 && needSend {

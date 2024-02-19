@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	defaultFccExpireTime = 5*time.Minute
+	defaultFccExpireTime = 5 * time.Minute
 )
 
 type FccConfTool struct {
@@ -61,7 +61,9 @@ func (f *FccConfTool) GetValueWithExpire(ctx context.Context, key string, expire
 
 func (f *FccConfTool) getValue(ctx context.Context, key string, expireTime time.Duration) (string, error) {
 	curTime := time.Now().Unix()
+	f.mu.Lock()
 	has, ok := f.confMap[key]
+	f.mu.Unlock()
 	if ok {
 		if curTime-has.UpdateTime < int64(expireTime/time.Second) {
 			return has.Value, nil
@@ -82,6 +84,14 @@ func (f *FccConfTool) getValue(ctx context.Context, key string, expireTime time.
 			Logger().Errorf("FetchConfig req=%v, res=%v", req, res)
 			return nil, errors.New(fmt.Sprintf("%v", res))
 		}
+
+		f.mu.Lock()
+		f.confMap[key] = &FccConfValue{
+			Value:      res.Data.Value,
+			UpdateTime: curTime,
+		}
+		f.mu.Unlock()
+
 		return res.Data.Value, nil
 	})
 	if err != nil {
@@ -90,14 +100,6 @@ func (f *FccConfTool) getValue(ctx context.Context, key string, expireTime time.
 		}
 		return "", err
 	}
-
 	value, _ := gRes.(string)
-	f.mu.Lock()
-	f.confMap[key] = &FccConfValue{
-		Value:      value,
-		UpdateTime: curTime,
-	}
-	f.mu.Unlock()
 	return value, nil
 }
-

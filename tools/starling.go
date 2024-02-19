@@ -14,8 +14,8 @@ import (
 )
 
 const (
-	defaultStarlingExpireTime = 10*time.Minute
-	defaultCapacity = 300
+	defaultStarlingExpireTime = 10 * time.Minute
+	defaultCapacity           = 300
 )
 
 type StarlingTool struct {
@@ -45,22 +45,21 @@ func InitStarlingTool(host string, projectKey, groupKey string) *StarlingTool {
 	return ret
 }
 
-func (f *StarlingTool) SetExpireTime (expireTime time.Duration) {
+func (f *StarlingTool) SetExpireTime(expireTime time.Duration) {
 	f.expireTime = expireTime
 }
 
-func (f *StarlingTool) SetCacheCapacity (capacity int) {
+func (f *StarlingTool) SetCacheCapacity(capacity int) {
 	f.cache = gcache.New(capacity).LFU().Build()
 }
 
 func (f *StarlingTool) GetTrans(ctx context.Context, lang string, keys []string) (map[string]string, error) {
 	sort.Strings(keys)
-	ret := make(map[string]string, 0)
+	ret := make(map[string]string)
 	hasNot := make([]string, 0)
 	for _, key := range keys {
 		cKey := fmt.Sprintf("%s_%s", lang, key)
 		cacheRet, err := f.cache.Get(cKey)
-		fmt.Println(cKey, cacheRet, err)
 		if err == nil && cacheRet != nil {
 			ret[cKey] = cacheRet.(string)
 			continue
@@ -78,20 +77,23 @@ func (f *StarlingTool) GetTrans(ctx context.Context, lang string, keys []string)
 			LangKeys:   hasNot,
 			Lang:       lang,
 		}
-		return f.client.FetchTransLgsByKey(ctx, req)
+		res, err := f.client.FetchTransLgsByKey(ctx, req)
+		if err != nil {
+			return nil, err
+		}
+		for _, v := range res.Data {
+			cKey := fmt.Sprintf("%s_%s", lang, v.LangKey)
+			_ = f.cache.SetWithExpire(cKey, v.TranslateText, f.expireTime)
+		}
+		return res.Data, nil
 	})
 	if err != nil {
 		Logger().Errorf("FetchTransLgsByKey error=%+v", err)
 		return ret, err
 	}
-	res, _ := gsfRes.(*servbp.FetchTransLgsByKeyResponse)
-	if res != nil && len(res.Data) > 0 {
-		for _, v := range res.Data {
-			ret[v.LangKey] = v.TranslateText
-			cKey := fmt.Sprintf("%s_%s", lang, v.LangKey)
-			fmt.Println(cKey, 111111)
-			f.cache.SetWithExpire(cKey, v.TranslateText, f.expireTime)
-		}
+	data, _ := gsfRes.([]*servbp.TransLg)
+	for _, v := range data {
+		ret[v.LangKey] = v.TranslateText
 	}
 	return ret, nil
 }
